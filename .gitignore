@@ -1,32 +1,51 @@
-# Prerequisites
-*.d
+# generic files to ignore
+.*
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# python temp paths
+__pycache__/
+*.py[cod]
 
-# Precompiled Headers
-*.gch
-*.pch
+# editors
+*~
+*.swp
+*.swo
+*#
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Indexes for emacs, vi & others
+TAGS
+tags
 
-# Fortran module files
-*.mod
-*.smod
+# QtCreator
+CMakeLists.txt.user
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# ms-windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
-# Executables
-*.exe
-*.out
-*.app
+# commonly used paths in blender
+/blender.bin
+/BUILD_NOTES.txt
+
+# local patches
+/*.patch
+/*.diff
+
+# in-source doc-gen
+/doc/doxygen/html/
+/doc/python_api/sphinx-in-tmp/
+/doc/python_api/sphinx-in/
+/doc/python_api/sphinx-out/
+/doc/python_api/rst/bmesh.ops.rst
+
+# in-source lib downloads
+/build_files/build_environment/downloads
+
+# in-source buildbot signing configuration
+/build_files/buildbot/codesign/config_server.py
+
+# smoke simulation noise tile (generated)
+waveletNoiseTile.bin
+
+# testing environment
+/Testing

@@ -1,0 +1,101 @@
+--- a/configure	2018-08-27 13:46:41.071106150 +0200
++++ b/configure	2018-08-27 13:46:28.162765762 +0200
+@@ -6013,7 +6013,7 @@
+                                require_pkg_config libopencv opencv opencv/cxcore.h cvCreateImageHeader; }
+ enabled libopenh264       && require_pkg_config libopenh264 openh264 wels/codec_api.h WelsGetCodecVersion
+ enabled libopenjpeg       && { check_pkg_config libopenjpeg "libopenjp2 >= 2.1.0" openjpeg.h opj_version ||
+-                               { require_pkg_config libopenjpeg "libopenjp2 >= 2.1.0" openjpeg.h opj_version -DOPJ_STATIC && add_cppflags -DOPJ_STATIC; } }
++                               { require_pkg_config libopenjpeg "libopenjp2 >= 2.1.0" openjpeg.h opj_version "-DOPJ_STATIC $pthreads_extralibs $libm_extralibs" && add_cppflags "-DOPJ_STATIC $pthreads_extralibs $libm_extralibs"; } }
+ enabled libopenmpt        && require_pkg_config libopenmpt "libopenmpt >= 0.2.6557" libopenmpt/libopenmpt.h openmpt_module_create -lstdc++ && append libopenmpt_extralibs "-lstdc++"
+ enabled libopus           && {
+     enabled libopus_decoder && {
+--- a/libavcodec/cfhddata.c
++++ b/libavcodec/cfhddata.c
+@@ -276,10 +276,10 @@
+ av_cold int ff_cfhd_init_vlcs(CFHDContext *s)
+ {
+     int i, j, ret = 0;
+-    uint32_t new_cfhd_vlc_bits[NB_VLC_TABLE_18 * 2];
+-    uint8_t  new_cfhd_vlc_len[NB_VLC_TABLE_18 * 2];
+-    uint16_t new_cfhd_vlc_run[NB_VLC_TABLE_18 * 2];
+-    int16_t  new_cfhd_vlc_level[NB_VLC_TABLE_18 * 2];
++    uint32_t *new_cfhd_vlc_bits = av_calloc(sizeof(uint32_t), NB_VLC_TABLE_18 * 2);
++    uint8_t  *new_cfhd_vlc_len = av_calloc(sizeof(uint8_t), NB_VLC_TABLE_18 * 2);
++    uint16_t *new_cfhd_vlc_run = av_calloc(sizeof(uint16_t), NB_VLC_TABLE_18 * 2);
++    int16_t  *new_cfhd_vlc_level = av_calloc(sizeof(int16_t), NB_VLC_TABLE_18 * 2);
+ 
+     /** Similar to dv.c, generate signed VLC tables **/
+ 
+@@ -305,8 +305,13 @@
+ 
+     ret = init_vlc(&s->vlc_9, VLC_BITS, j, new_cfhd_vlc_len,
+                    1, 1, new_cfhd_vlc_bits, 4, 4, 0);
+-    if (ret < 0)
++    if (ret < 0) {
++        av_free(new_cfhd_vlc_bits);
++        av_free(new_cfhd_vlc_len);
++        av_free(new_cfhd_vlc_run);
++        av_free(new_cfhd_vlc_level);
+         return ret;
++    }
+     for (i = 0; i < s->vlc_9.table_size; i++) {
+         int code = s->vlc_9.table[i][0];
+         int len  = s->vlc_9.table[i][1];
+@@ -346,8 +351,14 @@
+ 
+     ret = init_vlc(&s->vlc_18, VLC_BITS, j, new_cfhd_vlc_len,
+                    1, 1, new_cfhd_vlc_bits, 4, 4, 0);
+-    if (ret < 0)
++    if (ret < 0) {
++        av_free(new_cfhd_vlc_bits);
++        av_free(new_cfhd_vlc_len);
++        av_free(new_cfhd_vlc_run);
++        av_free(new_cfhd_vlc_level);
+         return ret;
++    }
++
+     av_assert0(s->vlc_18.table_size == 4572);
+ 
+     for (i = 0; i < s->vlc_18.table_size; i++) {
+@@ -367,5 +378,10 @@
+         s->table_18_rl_vlc[i].run   = run;
+     }
+ 
++    av_free(new_cfhd_vlc_bits);
++    av_free(new_cfhd_vlc_len);
++    av_free(new_cfhd_vlc_run);
++    av_free(new_cfhd_vlc_level);
++
+     return ret;
+ }
+--- a/libavcodec/rl.c
++++ b/libavcodec/rl.c
+@@ -71,17 +71,19 @@
+ av_cold void ff_rl_init_vlc(RLTable *rl, unsigned static_size)
+ {
+     int i, q;
+-    VLC_TYPE table[1500][2] = {{0}};
++    VLC_TYPE (*table)[2] = av_calloc(sizeof(VLC_TYPE), 1500 * 2);
+     VLC vlc = { .table = table, .table_allocated = static_size };
+-    av_assert0(static_size <= FF_ARRAY_ELEMS(table));
++    av_assert0(static_size < 1500);
+     init_vlc(&vlc, 9, rl->n + 1, &rl->table_vlc[0][1], 4, 2, &rl->table_vlc[0][0], 4, 2, INIT_VLC_USE_NEW_STATIC);
+ 
+     for (q = 0; q < 32; q++) {
+         int qmul = q * 2;
+         int qadd = (q - 1) | 1;
+ 
+-        if (!rl->rl_vlc[q])
++        if (!rl->rl_vlc[q]){
++            av_free(table);
+             return;
++        }
+ 
+         if (q == 0) {
+             qmul = 1;
+@@ -113,4 +115,5 @@
+             rl->rl_vlc[q][i].run   = run;
+         }
+     }
++    av_free(table);
+ }
