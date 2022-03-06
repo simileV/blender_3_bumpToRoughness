@@ -64,7 +64,7 @@ void node_bsdf_principled(vec4 base_color,
   in_Diffuse_0.N = N; /* Normalized during eval. */
   in_Diffuse_0.albedo = mix(base_color.rgb, subsurface_color.rgb, subsurface);
 
-  in_Glossy_1.N = N; /* Normalized during eval. */
+  in_Glossy_1.N = CN; /* Normalized during eval. */
   in_Glossy_1.roughness = roughness;
 
   in_Glossy_2.N = CN; /* Normalized during eval. */

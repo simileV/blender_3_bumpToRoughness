@@ -3,8 +3,6 @@
 
 # OSL node shaders
 
-#abj_b2r_req
-
 set(SRC_OSL
   node_add_closure.osl
   node_ambient_occlusion.osl

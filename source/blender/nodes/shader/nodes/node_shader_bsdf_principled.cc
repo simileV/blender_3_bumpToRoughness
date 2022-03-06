@@ -101,7 +101,7 @@ static void node_declare(NodeDeclarationBuilder &b)
       .max(1.0f)
       .subtype(PROP_FACTOR);
   b.add_input<decl::Vector>(N_("Normal")).hide_value();
-  b.add_input<decl::Vector>(N_("Specular Normal")).hide_value();
+  //b.add_input<decl::Vector>(N_("Specular Normal")).hide_value();
   b.add_input<decl::Vector>(N_("Clearcoat Normal")).hide_value();
   b.add_input<decl::Vector>(N_("Tangent")).hide_value();
   b.add_output<decl::Shader>(N_("BSDF"));

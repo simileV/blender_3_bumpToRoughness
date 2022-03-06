@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2011-2022 Blender Foundation
 
-#abj_b2r_req
-
 remove_extra_strict_flags()
 
 set(INC

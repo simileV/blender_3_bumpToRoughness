@@ -25,7 +25,6 @@
  */
 
 #include "kernel/svm/types.h"
-//abj_b2r_req
 
 CCL_NAMESPACE_BEGIN
 

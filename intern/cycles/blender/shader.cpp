@@ -29,8 +29,6 @@ typedef map<void *, ShaderOutput *> PtrOutputMap;
 typedef map<string, ConvertNode *> ProxyMap;
 
 /* Find */
-//abj_b2r_req
-
 void BlenderSync::find_shader(BL::ID &id, array<Node *> &used_shaders, Shader *default_shader)
 {
   Shader *synced_shader = (id) ? shader_map.find(id) : nullptr;
