@@ -2767,6 +2767,7 @@ NODE_DEFINE(PrincipledBsdfNode)
   SOCKET_IN_FLOAT(emission_strength, "Emission Strength", 1.0f);
   SOCKET_IN_FLOAT(alpha, "Alpha", 1.0f);
   SOCKET_IN_NORMAL(normal, "Normal", zero_float3(), SocketType::LINK_NORMAL);
+  SOCKET_IN_NORMAL(specular_normal, "Specular Normal", zero_float3(), SocketType::LINK_NORMAL);
   SOCKET_IN_NORMAL(clearcoat_normal, "Clearcoat Normal", zero_float3(), SocketType::LINK_NORMAL);
   SOCKET_IN_NORMAL(tangent, "Tangent", zero_float3(), SocketType::LINK_TANGENT);
   SOCKET_IN_FLOAT(surface_mix_weight, "SurfaceMixWeight", 0.0f, SocketType::SVM_INTERNAL);
@@ -2878,6 +2879,7 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler,
   ShaderInput *base_color_in = input("Base Color");
   ShaderInput *subsurface_color_in = input("Subsurface Color");
   ShaderInput *normal_in = input("Normal");
+  ShaderInput *specular_normal_in = input("Specular Normal");
   ShaderInput *clearcoat_normal_in = input("Clearcoat Normal");
   ShaderInput *tangent_in = input("Tangent");
 
@@ -2886,6 +2888,7 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler,
   compiler.add_node(NODE_CLOSURE_SET_WEIGHT, weight);
 
   int normal_offset = compiler.stack_assign_if_linked(normal_in);
+  int specular_normal_offset = compiler.stack_assign_if_linked(specular_normal_in);
   int clearcoat_normal_offset = compiler.stack_assign_if_linked(clearcoat_normal_in);
   int tangent_offset = compiler.stack_assign_if_linked(tangent_in);
   int specular_offset = compiler.stack_assign(p_specular);
@@ -2919,6 +2922,8 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler,
           specular_offset, roughness_offset, specular_tint_offset, anisotropic_offset),
       compiler.encode_uchar4(
           sheen_offset, sheen_tint_offset, clearcoat_offset, clearcoat_roughness_offset));
+
+  compiler.add_node(specular_normal_offset);
 
   compiler.add_node(compiler.encode_uchar4(ior_offset,
                                            transmission_offset,

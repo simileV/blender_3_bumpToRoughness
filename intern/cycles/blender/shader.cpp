@@ -29,7 +29,7 @@ typedef map<void *, ShaderOutput *> PtrOutputMap;
 typedef map<string, ConvertNode *> ProxyMap;
 
 /* Find */
-//test
+//abj_b2r_req
 
 void BlenderSync::find_shader(BL::ID &id, array<Node *> &used_shaders, Shader *default_shader)
 {

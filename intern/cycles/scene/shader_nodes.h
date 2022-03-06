@@ -568,6 +568,7 @@ class PrincipledBsdfNode : public BsdfBaseNode {
   NODE_SOCKET_API(float, anisotropic_rotation)
   NODE_SOCKET_API(float, transmission_roughness)
   NODE_SOCKET_API(float3, normal)
+  NODE_SOCKET_API(float3, specular_normal)
   NODE_SOCKET_API(float3, clearcoat_normal)
   NODE_SOCKET_API(float3, tangent)
   NODE_SOCKET_API(float, surface_mix_weight)
