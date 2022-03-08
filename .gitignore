@@ -27,6 +27,8 @@ Desktop.ini
 /blender.bin
 /BUILD_NOTES.txt
 
+/out
+
 # local patches
 /*.patch
 /*.diff

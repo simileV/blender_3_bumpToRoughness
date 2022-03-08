@@ -2888,9 +2888,9 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler,
   compiler.add_node(NODE_CLOSURE_SET_WEIGHT, weight);
 
   int normal_offset = compiler.stack_assign_if_linked(normal_in);
-  int specular_normal_offset = compiler.stack_assign_if_linked(specular_normal_in);
   int clearcoat_normal_offset = compiler.stack_assign_if_linked(clearcoat_normal_in);
   int tangent_offset = compiler.stack_assign_if_linked(tangent_in);
+  int specular_normal_offset = compiler.stack_assign_if_linked(specular_normal_in);
   int specular_offset = compiler.stack_assign(p_specular);
   int roughness_offset = compiler.stack_assign(p_roughness);
   int specular_tint_offset = compiler.stack_assign(p_specular_tint);
@@ -2923,7 +2923,6 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler,
       compiler.encode_uchar4(
           sheen_offset, sheen_tint_offset, clearcoat_offset, clearcoat_roughness_offset));
 
-  compiler.add_node(specular_normal_offset);
 
   compiler.add_node(compiler.encode_uchar4(ior_offset,
                                            transmission_offset,
@@ -2953,6 +2952,8 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler,
                     __float_as_int(ss_default.x),
                     __float_as_int(ss_default.y),
                     __float_as_int(ss_default.z));
+
+  compiler.add_node(specular_normal_offset);
 }
 
 bool PrincipledBsdfNode::has_integrator_dependency()

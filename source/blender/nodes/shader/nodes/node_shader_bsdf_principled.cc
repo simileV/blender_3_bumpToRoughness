@@ -101,9 +101,9 @@ static void node_declare(NodeDeclarationBuilder &b)
       .max(1.0f)
       .subtype(PROP_FACTOR);
   b.add_input<decl::Vector>(N_("Normal")).hide_value();
-  //b.add_input<decl::Vector>(N_("Specular Normal")).hide_value();
   b.add_input<decl::Vector>(N_("Clearcoat Normal")).hide_value();
   b.add_input<decl::Vector>(N_("Tangent")).hide_value();
+  b.add_input<decl::Vector>(N_("Specular Normal")).hide_value();
   b.add_output<decl::Shader>(N_("BSDF"));
 }
 
@@ -141,6 +141,7 @@ static int node_shader_gpu_bsdf_principled(GPUMaterial *mat,
     GPU_link(mat, "world_normals_get", &in[23].link);
   }
 
+
 #if 0 /* Not used at the moment. */
   /* Tangents */
   if (!in[24].link) {
@@ -154,6 +155,12 @@ static int node_shader_gpu_bsdf_principled(GPUMaterial *mat,
              &in[24].link);
   }
 #endif
+
+  
+  /* Specular Normals */
+  if (!in[25].link) {
+    GPU_link(mat, "world_normals_get", &in[25].link);
+  }
 
   bool use_diffuse = socket_not_one(6) && socket_not_one(17);
   bool use_subsurf = socket_not_zero(1) && use_diffuse && node->sss_id > 0;
