@@ -26,9 +26,9 @@ shader node_principled_bsdf(string distribution = "Multiscatter GGX",
                             float Transmission = 0.0,
                             float TransmissionRoughness = 0.0,
                             normal Normal = N,
-                            //normal SpecularNormal = N,
                             normal ClearcoatNormal = N,
                             normal Tangent = normalize(dPdu),
+                            normal SpecularNormal = N,
                             output closure color BSDF = 0)
 {
   float f = max(IOR, 1e-5);
@@ -87,7 +87,7 @@ shader node_principled_bsdf(string distribution = "Multiscatter GGX",
 
     if (distribution == "GGX" || Roughness <= 0.075) {
       BSDF = BSDF + specular_weight *
-                        microfacet_ggx_aniso_fresnel(ClearcoatNormal,
+                        microfacet_ggx_aniso_fresnel(SpecularNormal,
                                                      T,
                                                      alpha_x,
                                                      alpha_y,
@@ -97,7 +97,7 @@ shader node_principled_bsdf(string distribution = "Multiscatter GGX",
     }
     else {
       BSDF = BSDF + specular_weight * microfacet_multi_ggx_aniso_fresnel(
-                                          ClearcoatNormal,
+                                          SpecularNormal,
                                           T,
                                           alpha_x,
                                           alpha_y,
