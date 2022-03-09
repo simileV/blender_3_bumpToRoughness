@@ -1514,6 +1514,13 @@ struct GPUMaterial *EEVEE_material_get(
       break;
   }
   /* Returned material should be ready to be drawn. */
+  if (GPU_material_status(mat) != GPU_MAT_SUCCESS) {
+    printf("%s/n", ma->id.name);
+    //printf(wo);
+    //printf(options);
+    printf("%s/n", deferred);
+  }
+
   BLI_assert(GPU_material_status(mat) == GPU_MAT_SUCCESS);
   return mat;
 }

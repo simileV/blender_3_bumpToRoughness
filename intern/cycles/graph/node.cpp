@@ -56,6 +56,11 @@ static bool is_socket_array_float3(const SocketType &socket)
 /* set values */
 void Node::set(const SocketType &input, bool value)
 {
+  if (input.type != SocketType::BOOLEAN) {
+    std::cout << "SOCKETTYPE != BOOLEAN "
+              << " " << input.name << " " << input.type << std::endl;
+  }
+
   assert(input.type == SocketType::BOOLEAN);
   set_if_different(input, value);
 }

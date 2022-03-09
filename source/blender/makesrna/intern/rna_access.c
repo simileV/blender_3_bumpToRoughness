@@ -5531,6 +5531,21 @@ static char *rna_idp_path(PointerRNA *ptr,
     if (iter->type == IDP_GROUP) {
       if (prop->type == PROP_POINTER) {
         PointerRNA child_ptr = RNA_property_pointer_get(ptr, prop);
+
+        if (RNA_pointer_is_null(&child_ptr)) {
+          printf("%s\n", "NEEDLE, haystack");
+         //printf("%s\n", needle);
+         printf("%s\n", needle->name);
+         //printf("%s\n", needle->type);
+         //printf("%s\n", needle->subtype);
+         //printf("%s\n", haystack);
+         printf("%s\n", haystack->name);
+         //printf("%s\n", haystack->type);
+         //printf("%s\n", haystack->subtype);
+         //printf("%s\n", child_ptr.owner_id->name);
+          
+        }
+
         BLI_assert(!RNA_pointer_is_null(&child_ptr));
         link.name = iter->name;
         link.index = -1;
