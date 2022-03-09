@@ -204,6 +204,6 @@ void node_bsdf_principled(vec4 base_color,
 #else
 /* clang-format off */
 /* Stub principled because it is not compatible with volumetrics. */
-#  define node_bsdf_principled(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, aa, bb, cc, dd, ee, ff, result) (result = CLOSURE_DEFAULT)
+#  define node_bsdf_principled(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, aa, bb, cc, dd, ee, ff, gg, result) (result = CLOSURE_DEFAULT)
 /* clang-format on */
 #endif
