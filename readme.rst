@@ -1,3 +1,9 @@
+Bump to Roughness in Cycles in OSL, just shoe-horning onto Principled shader into the Blender Source. See https://bergjones.artstation.com/projects/xYNql4 for details and video comparison. The OSL shaders are at https://github.com/simileV/abj_osl_b2r
+
+.. figure:: https://cdna.artstation.com/p/assets/images/images/047/176/298/large/similev-compb2r-2.jpg?1646936571
+   :scale: 100 %
+   :align: center
+
 
 .. Keep this document short & concise,
    linking to external resources instead of including content in-line.
