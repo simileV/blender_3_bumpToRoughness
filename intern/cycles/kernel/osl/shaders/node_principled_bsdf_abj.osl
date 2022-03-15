@@ -4,7 +4,10 @@
 #include "node_fresnel.h"
 #include "stdcycles.h"
 
-shader node_principled_bsdf(string distribution = "Multiscatter GGX",
+// shader node_principled_bsdf_abj(
+                            // output color BSDF = 0)
+                                
+shader node_principled_bsdf_abj(string distribution = "Multiscatter GGX",
                             string subsurface_method = "random_walk",
                             color BaseColor = color(0.8, 0.8, 0.8),
                             float Subsurface = 0.0,
@@ -31,6 +34,7 @@ shader node_principled_bsdf(string distribution = "Multiscatter GGX",
                             normal SpecularNormal = N,
                             float SpecularRoughness = 0.2,
                             float DiffuseRoughness = 0.0,
+                            float Emission = 0.0,
                             output closure color BSDF = 0)
 {
   float f = max(IOR, 1e-5);
@@ -47,25 +51,27 @@ shader node_principled_bsdf(string distribution = "Multiscatter GGX",
   /* rotate tangent */
   if (AnisotropicRotation != 0.0)
     T = rotate(T, AnisotropicRotation * M_2PI, point(0.0, 0.0, 0.0), Normal);
+    
+    
+    
+      if (diffuse_weight > 1e-5) {
+        if (Subsurface > 1e-5) {
+          color mixed_ss_base_color = SubsurfaceColor * Subsurface + BaseColor * (1.0 - Subsurface);
 
-  if (diffuse_weight > 1e-5) {
-    if (Subsurface > 1e-5) {
-      color mixed_ss_base_color = SubsurfaceColor * Subsurface + BaseColor * (1.0 - Subsurface);
-
-      BSDF = mixed_ss_base_color * bssrdf(subsurface_method,
-                                          Normal,
-                                          Subsurface * SubsurfaceRadius,
-                                          mixed_ss_base_color,
-                                          "roughness",
-                                          DiffuseRoughness,
-                                          "ior",
-                                          SubsurfaceIOR,
-                                          "anisotropy",
-                                          SubsurfaceAnisotropy);
-    }
-    else {
-      BSDF = BaseColor * principled_diffuse(Normal, DiffuseRoughness);
-    }
+          BSDF = mixed_ss_base_color * bssrdf(subsurface_method,
+                                              Normal,
+                                              Subsurface * SubsurfaceRadius,
+                                              mixed_ss_base_color,
+                                              "roughness",
+                                              DiffuseRoughness,
+                                              "ior",
+                                              SubsurfaceIOR,
+                                              "anisotropy",
+                                              SubsurfaceAnisotropy);
+        }
+        else {
+          BSDF = BaseColor * principled_diffuse(Normal, DiffuseRoughness);
+        }
 
     if (Sheen > 1e-5) {
       color sheen_color = color(1.0, 1.0, 1.0) * (1.0 - SheenTint) + m_ctint * SheenTint;
@@ -74,9 +80,13 @@ shader node_principled_bsdf(string distribution = "Multiscatter GGX",
     }
 
     BSDF = BSDF * diffuse_weight;
+    // BSDF = diffuse_weight;
   }
-
-  if (specular_weight > 1e-5) {
+  
+  
+  
+  
+    if (specular_weight > 1e-5) {
     float aspect = sqrt(1.0 - Anisotropic * 0.9);
     float r2 = SpecularRoughness * SpecularRoughness;
 
@@ -149,4 +159,11 @@ shader node_principled_bsdf(string distribution = "Multiscatter GGX",
     BSDF = BSDF + principled_clearcoat(
                       ClearcoatNormal, Clearcoat, ClearcoatRoughness * ClearcoatRoughness);
   }
+
+    // BSDF = Diffuse(Normal);
 }
+
+
+    // BSDF = color(0.0, 1.0, 0.0);
+    
+ 

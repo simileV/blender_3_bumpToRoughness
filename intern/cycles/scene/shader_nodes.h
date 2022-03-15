@@ -546,7 +546,9 @@ class PrincipledBsdfNode : public BsdfBaseNode {
                ShaderInput *ior,
                ShaderInput *transmission,
                ShaderInput *anisotropic_rotation,
-               ShaderInput *transmission_roughness);
+               ShaderInput *transmission_roughness,
+               ShaderInput *specular_roughness,
+               ShaderInput *diffuse_roughness);
 
   NODE_SOCKET_API(float3, base_color)
   NODE_SOCKET_API(float3, subsurface_color)
@@ -577,6 +579,8 @@ class PrincipledBsdfNode : public BsdfBaseNode {
   NODE_SOCKET_API(float3, emission)
   NODE_SOCKET_API(float, emission_strength)
   NODE_SOCKET_API(float, alpha)
+  NODE_SOCKET_API(float, specular_roughness)
+  NODE_SOCKET_API(float, diffuse_roughness)
 
  private:
   ClosureType distribution_orig;

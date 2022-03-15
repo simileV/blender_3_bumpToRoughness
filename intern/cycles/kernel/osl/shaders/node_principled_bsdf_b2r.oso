@@ -1,7 +1,7 @@
 OpenShadingLanguage 1.00
 # Compiled by oslc 1.11.14
-# options: -o C:\Users\aleks\AppData\Local\Temp\tmpjrxhuhb1.oso -IC:\Users\aleks\source\repos\blender_b2r\build_windows_Full_x64_vc16_Release\bin\Release\3.2\scripts\addons\cycles\shader
-shader node_principled_bsdf
+# options: -o C:\Users\aleks\AppData\Local\Temp\tmpco7515aq.oso -IC:\Program Files\Blender Foundation\Blender 3.1\3.1\scripts\addons\cycles\shader
+shader node_principled_bsdf_b2r
 param	string	distribution	"Multiscatter GGX"		%read{125,197} %write{2147483647,-1}
 param	string	subsurface_method	"random_walk"		%read{92,92} %write{2147483647,-1}
 param	color	BaseColor	0.800000012 0.800000012 0.800000012		%read{24,215} %write{2147483647,-1}
@@ -23,13 +23,16 @@ param	float	ClearcoatRoughness	0.0299999993		%read{220,220} %write{2147483647,-1
 param	float	IOR	1.45000005		%read{4,4} %write{2147483647,-1}
 param	float	Transmission	0		%read{10,15} %write{2147483647,-1}
 param	float	TransmissionRoughness	0		%read{200,200} %write{2147483647,-1}
-param	normal	Normal	0 0 0		%read{33,215} %write{0,0} %initexpr
+param	normal	Normal	0 0 0		%read{92,215} %write{0,0} %initexpr
 param	normal	ClearcoatNormal	0 0 0		%read{221,221} %write{1,1} %initexpr
 param	normal	Tangent	0 0 0		%read{23,23} %write{2,2} %initexpr
-param	normal	SpecularNormal	0 0 0		%read{137,145} %write{3,3} %initexpr
+param	normal	SpecularNormal	0 0 0		%read{33,145} %write{3,3} %initexpr
 param	float	SpecularRoughness	0.200000003		%read{112,128} %write{2147483647,-1}
 param	float	DiffuseRoughness	0		%read{92,214} %write{2147483647,-1}
+param	float	Emission	0		%read{2147483647,-1} %write{2147483647,-1}
 oparam	closure color	BSDF			%read{105,222} %write{93,222}
+oparam	color	test	0 0 0		%read{2147483647,-1} %write{2147483647,-1}
+oparam	color	test2	0 0 0		%read{2147483647,-1} %write{2147483647,-1}
 global	vector	I	%read{165,165} %write{2147483647,-1}
 global	normal	N	%read{0,3} %write{2147483647,-1}
 global	vector	dPdu	%read{2,2} %write{2147483647,-1}
@@ -246,307 +249,307 @@ temp	closure color	$tmp149	%read{222,222} %write{221,221}
 temp	float	$tmp150	%read{221,221} %write{220,220}
 const	string	$const32	"principled_clearcoat"		%read{221,221} %write{2147483647,-1}
 code Normal
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:29
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:32
 #                             normal ClearcoatNormal = N,
-	assign		Normal N 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl"} %line{29} %argrw{"wr"}
+	assign		Normal N 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl"} %line{32} %argrw{"wr"}
 code ClearcoatNormal
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:30
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:33
 #                             normal Tangent = normalize(dPdu),
-	assign		ClearcoatNormal N 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl"} %line{30} %argrw{"wr"}
+	assign		ClearcoatNormal N 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl"} %line{33} %argrw{"wr"}
 code Tangent
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:31
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:34
 #                             normal SpecularNormal = N,
-	normalize	Tangent dPdu 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl"} %line{31} %argrw{"wr"}
+	normalize	Tangent dPdu 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl"} %line{34} %argrw{"wr"}
 code SpecularNormal
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:32
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:35
 #                             float SpecularRoughness = 0.2,
-	assign		SpecularNormal N 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl"} %line{32} %argrw{"wr"}
+	assign		SpecularNormal N 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl"} %line{35} %argrw{"wr"}
 code ___main___
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:37
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:43
 #   float diffuse_weight = (1.0 - clamp(Metallic, 0.0, 1.0)) * (1.0 - clamp(Transmission, 0.0, 1.0));
-	max		f IOR $const1 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl"} %line{37} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:38
+	max		f IOR $const1 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl"} %line{43} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:44
 #   float final_transmission = clamp(Transmission, 0.0, 1.0) * (1.0 - clamp(Metallic, 0.0, 1.0));
-	functioncall	$const4 8 	%line{38} %argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:141
+	functioncall	$const4 8 	%line{44} %argrw{"r"}
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:141
 # float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
-	min		$tmp2 Metallic $const2 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h"} %line{141} %argrw{"wrr"}
+	min		$tmp2 Metallic $const2 	%filename{"C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h"} %line{141} %argrw{"wrr"}
 	max		$tmp1 $tmp2 $const3 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:38
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:44
 #   float final_transmission = clamp(Transmission, 0.0, 1.0) * (1.0 - clamp(Metallic, 0.0, 1.0));
-	sub		$tmp3 $const2 $tmp1 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl"} %line{38} %argrw{"wrr"}
+	sub		$tmp3 $const2 $tmp1 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl"} %line{44} %argrw{"wrr"}
 	functioncall	$const4 12 	%argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:141
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:141
 # float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
-	min		$tmp5 Transmission $const2 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h"} %line{141} %argrw{"wrr"}
+	min		$tmp5 Transmission $const2 	%filename{"C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h"} %line{141} %argrw{"wrr"}
 	max		$tmp4 $tmp5 $const3 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:38
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:44
 #   float final_transmission = clamp(Transmission, 0.0, 1.0) * (1.0 - clamp(Metallic, 0.0, 1.0));
-	sub		$tmp6 $const2 $tmp4 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl"} %line{38} %argrw{"wrr"}
+	sub		$tmp6 $const2 $tmp4 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl"} %line{44} %argrw{"wrr"}
 	mul		diffuse_weight $tmp3 $tmp6 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:39
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:45
 #   float specular_weight = (1.0 - final_transmission);
-	functioncall	$const4 17 	%line{39} %argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:141
+	functioncall	$const4 17 	%line{45} %argrw{"r"}
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:141
 # float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
-	min		$tmp8 Transmission $const2 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h"} %line{141} %argrw{"wrr"}
+	min		$tmp8 Transmission $const2 	%filename{"C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h"} %line{141} %argrw{"wrr"}
 	max		$tmp7 $tmp8 $const3 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:39
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:45
 #   float specular_weight = (1.0 - final_transmission);
-	functioncall	$const4 20 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl"} %line{39} %argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:141
+	functioncall	$const4 20 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl"} %line{45} %argrw{"r"}
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:141
 # float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
-	min		$tmp10 Metallic $const2 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h"} %line{141} %argrw{"wrr"}
+	min		$tmp10 Metallic $const2 	%filename{"C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h"} %line{141} %argrw{"wrr"}
 	max		$tmp9 $tmp10 $const3 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:39
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:45
 #   float specular_weight = (1.0 - final_transmission);
-	sub		$tmp11 $const2 $tmp9 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl"} %line{39} %argrw{"wrr"}
+	sub		$tmp11 $const2 $tmp9 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl"} %line{45} %argrw{"wrr"}
 	mul		final_transmission $tmp7 $tmp11 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:40
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:46
 # 
-	sub		specular_weight $const2 final_transmission 	%line{40} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:42
+	sub		specular_weight $const2 final_transmission 	%line{46} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:48
 # 
-	assign		T Tangent 	%line{42} %argrw{"wr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:44
+	assign		T Tangent 	%line{48} %argrw{"wr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:50
 #   color m_ctint = m_cdlum > 0.0 ? BaseColor / m_cdlum :
-	luminance	m_cdlum BaseColor 	%line{44} %argrw{"wr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:45
+	luminance	m_cdlum BaseColor 	%line{50} %argrw{"wr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:51
 #                                   color(1.0, 1.0, 1.0);  // normalize lum. to isolate hue+sat
-	gt		$tmp12 m_cdlum $const3 	%line{45} %argrw{"wrr"}
+	gt		$tmp12 m_cdlum $const3 	%line{51} %argrw{"wrr"}
 	if		$tmp12 28 29 	%argrw{"r"}
 	div		m_ctint BaseColor m_cdlum 	%argrw{"wrr"}
 	assign		m_ctint $const5 	%argrw{"wr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:49
-#     T = rotate(T, AnisotropicRotation * M_2PI, point(0.0, 0.0, 0.0), Normal);
-	neq		$tmp13 AnisotropicRotation $const3 	%line{49} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:55
+#     // T = rotate(T, AnisotropicRotation * M_2PI, point(0.0, 0.0, 0.0), Normal);
+	neq		$tmp13 AnisotropicRotation $const3 	%line{55} %argrw{"wrr"}
 	if		$tmp13 83 83 	%argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:50
-# 
-	mul		$tmp14 AnisotropicRotation $const6 	%line{50} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:57
+#     
+	mul		$tmp14 AnisotropicRotation $const6 	%line{57} %argrw{"wrr"}
 	functioncall	$const8 83 	%argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:270
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:270
 #     vector axis = normalize (b - a);
-	sub		$tmp16 Normal $const7 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h"} %line{270} %argrw{"wrr"}
+	sub		$tmp16 SpecularNormal $const7 	%filename{"C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h"} %line{270} %argrw{"wrr"}
 	normalize	___257_axis $tmp16 	%argrw{"wr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:272
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:272
 #     sincos (angle, sinang, cosang);
 	sincos		$tmp14 ___257_sinang ___257_cosang 	%line{272} %argrw{"rww"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:273
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:273
 #     float cosang1 = 1.0 - cosang;
 	sub		___257_cosang1 $const2 ___257_cosang 	%line{273} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:274
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:274
 #     float x = axis[0], y = axis[1], z = axis[2];
 	compref		___257_x ___257_axis $const9 	%line{274} %argrw{"wrr"}
 	compref		___257_y ___257_axis $const10 	%argrw{"wrr"}
 	compref		___257_z ___257_axis $const11 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:275
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:275
 #     matrix M = matrix (x * x + (1.0 - x * x) * cosang,
 	mul		$tmp17 ___257_x ___257_x 	%line{275} %argrw{"wrr"}
 	mul		$tmp18 ___257_x ___257_x 	%argrw{"wrr"}
 	sub		$tmp19 $const2 $tmp18 	%argrw{"wrr"}
 	mul		$tmp20 $tmp19 ___257_cosang 	%argrw{"wrr"}
 	add		$tmp21 $tmp17 $tmp20 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:276
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:276
 #                        x * y * cosang1 + z * sinang,
 	mul		$tmp22 ___257_x ___257_y 	%line{276} %argrw{"wrr"}
 	mul		$tmp23 $tmp22 ___257_cosang1 	%argrw{"wrr"}
 	mul		$tmp24 ___257_z ___257_sinang 	%argrw{"wrr"}
 	add		$tmp25 $tmp23 $tmp24 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:277
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:277
 #                        x * z * cosang1 - y * sinang,
 	mul		$tmp26 ___257_x ___257_z 	%line{277} %argrw{"wrr"}
 	mul		$tmp27 $tmp26 ___257_cosang1 	%argrw{"wrr"}
 	mul		$tmp28 ___257_y ___257_sinang 	%argrw{"wrr"}
 	sub		$tmp29 $tmp27 $tmp28 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:279
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:279
 #                        x * y * cosang1 - z * sinang,
 	mul		$tmp30 ___257_x ___257_y 	%line{279} %argrw{"wrr"}
 	mul		$tmp31 $tmp30 ___257_cosang1 	%argrw{"wrr"}
 	mul		$tmp32 ___257_z ___257_sinang 	%argrw{"wrr"}
 	sub		$tmp33 $tmp31 $tmp32 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:280
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:280
 #                        y * y + (1.0 - y * y) * cosang,
 	mul		$tmp34 ___257_y ___257_y 	%line{280} %argrw{"wrr"}
 	mul		$tmp35 ___257_y ___257_y 	%argrw{"wrr"}
 	sub		$tmp36 $const2 $tmp35 	%argrw{"wrr"}
 	mul		$tmp37 $tmp36 ___257_cosang 	%argrw{"wrr"}
 	add		$tmp38 $tmp34 $tmp37 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:281
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:281
 #                        y * z * cosang1 + x * sinang,
 	mul		$tmp39 ___257_y ___257_z 	%line{281} %argrw{"wrr"}
 	mul		$tmp40 $tmp39 ___257_cosang1 	%argrw{"wrr"}
 	mul		$tmp41 ___257_x ___257_sinang 	%argrw{"wrr"}
 	add		$tmp42 $tmp40 $tmp41 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:283
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:283
 #                        x * z * cosang1 + y * sinang,
 	mul		$tmp43 ___257_x ___257_z 	%line{283} %argrw{"wrr"}
 	mul		$tmp44 $tmp43 ___257_cosang1 	%argrw{"wrr"}
 	mul		$tmp45 ___257_y ___257_sinang 	%argrw{"wrr"}
 	add		$tmp46 $tmp44 $tmp45 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:284
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:284
 #                        y * z * cosang1 - x * sinang,
 	mul		$tmp47 ___257_y ___257_z 	%line{284} %argrw{"wrr"}
 	mul		$tmp48 $tmp47 ___257_cosang1 	%argrw{"wrr"}
 	mul		$tmp49 ___257_x ___257_sinang 	%argrw{"wrr"}
 	sub		$tmp50 $tmp48 $tmp49 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:285
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:285
 #                        z * z + (1.0 - z * z) * cosang,
 	mul		$tmp51 ___257_z ___257_z 	%line{285} %argrw{"wrr"}
 	mul		$tmp52 ___257_z ___257_z 	%argrw{"wrr"}
 	sub		$tmp53 $const2 $tmp52 	%argrw{"wrr"}
 	mul		$tmp54 $tmp53 ___257_cosang 	%argrw{"wrr"}
 	add		$tmp55 $tmp51 $tmp54 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:275
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:275
 #     matrix M = matrix (x * x + (1.0 - x * x) * cosang,
 	matrix		___257_M $tmp21 $tmp25 $tmp29 $const3 $tmp33 $tmp38 $tmp42 $const3 $tmp46 $tmp50 $tmp55 $const3 $const3 $const3 $const3 $const2 	%line{275} %argrw{"wrrrrrrrrrrrrrrrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\build_windows_Full_x64_vc16_Release\\bin\\Release\\3.2\\scripts\\addons\\cycles\\shader/stdosl.h:288
+# C:\\Program Files\\Blender Foundation\\Blender 3.1\\3.1\\scripts\\addons\\cycles\\shader/stdosl.h:288
 #     return transform (M, p-a) + a;
 	sub		$tmp57 T $const7 	%line{288} %argrw{"wrr"}
 	transformv	$tmp56 ___257_M $tmp57 	%argrw{"wrr"}
 	add		T $tmp56 $const7 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:52
-#     if (Subsurface > 1e-5) {
-	gt		$tmp58 diffuse_weight $const1 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl"} %line{52} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:61
+#       {
+	gt		$tmp58 diffuse_weight $const1 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl"} %line{61} %argrw{"wrr"}
 	if		$tmp58 107 107 	%argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:53
-#       color mixed_ss_base_color = SubsurfaceColor * Subsurface + BaseColor * (1.0 - Subsurface);
-	gt		$tmp59 Subsurface $const1 	%line{53} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:63
+#             {
+	gt		$tmp59 Subsurface $const1 	%line{63} %argrw{"wrr"}
 	if		$tmp59 94 96 	%argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:54
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:65
 # 
-	mul		$tmp60 SubsurfaceColor Subsurface 	%line{54} %argrw{"wrr"}
+	mul		$tmp60 SubsurfaceColor Subsurface 	%line{65} %argrw{"wrr"}
 	sub		$tmp61 $const2 Subsurface 	%argrw{"wrr"}
 	mul		$tmp62 BaseColor $tmp61 	%argrw{"wrr"}
 	add		___372_mixed_ss_base_color $tmp60 $tmp62 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:58
-#                                           mixed_ss_base_color,
-	mul		$tmp64 Subsurface SubsurfaceRadius 	%line{58} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:56
-#                                           Normal,
-	closure		$tmp63 $const15 subsurface_method Normal $tmp64 ___372_mixed_ss_base_color $const12 DiffuseRoughness $const13 SubsurfaceIOR $const14 SubsurfaceAnisotropy 	%line{56} %argrw{"wrrrrrrrrrrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:69
+#                                                     mixed_ss_base_color,
+	mul		$tmp64 Subsurface SubsurfaceRadius 	%line{69} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:67
+#                                                     Normal,
+	closure		$tmp63 $const15 subsurface_method Normal $tmp64 ___372_mixed_ss_base_color $const12 DiffuseRoughness $const13 SubsurfaceIOR $const14 SubsurfaceAnisotropy 	%line{67} %argrw{"wrrrrrrrrrrr"}
 	mul		BSDF $tmp63 ___372_mixed_ss_base_color 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:68
-#     }
-	closure		$tmp65 $const16 Normal DiffuseRoughness 	%line{68} %argrw{"wrrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:81
+#                 // BSDF = principled_diffuse(Normal, DiffuseRoughness);
+	closure		$tmp65 $const16 Normal DiffuseRoughness 	%line{81} %argrw{"wrrr"}
 	mul		BSDF $tmp65 BaseColor 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:71
-#       color sheen_color = color(1.0, 1.0, 1.0) * (1.0 - SheenTint) + m_ctint * SheenTint;
-	gt		$tmp66 Sheen $const1 	%line{71} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:85
+#         {
+	gt		$tmp66 Sheen $const1 	%line{85} %argrw{"wrr"}
 	if		$tmp66 106 106 	%argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:72
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:87
 # 
-	sub		$tmp68 $const2 SheenTint 	%line{72} %argrw{"wrr"}
+	sub		$tmp68 $const2 SheenTint 	%line{87} %argrw{"wrr"}
 	mul		$tmp69 $const5 $tmp68 	%argrw{"wrr"}
 	mul		$tmp70 m_ctint SheenTint 	%argrw{"wrr"}
 	add		___374_sheen_color $tmp69 $tmp70 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:74
-#     }
-	closure		$tmp71 $const17 Normal 	%line{74} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:89
+#         }
+	closure		$tmp71 $const17 Normal 	%line{89} %argrw{"wrr"}
 	mul		$tmp72 ___374_sheen_color Sheen 	%argrw{"wrr"}
 	mul		$tmp73 $tmp71 $tmp72 	%argrw{"wrr"}
 	add		BSDF BSDF $tmp73 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:77
-#   }
-	mul		BSDF BSDF diffuse_weight 	%line{77} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:80
-#     float aspect = sqrt(1.0 - Anisotropic * 0.9);
-	gt		$tmp74 specular_weight $const1 	%line{80} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:92
+#     }
+	mul		BSDF BSDF diffuse_weight 	%line{92} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:95
+#     {
+	gt		$tmp74 specular_weight $const1 	%line{95} %argrw{"wrr"}
 	if		$tmp74 148 148 	%argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:81
-#     float r2 = SpecularRoughness * SpecularRoughness;
-	mul		$tmp75 Anisotropic $const18 	%line{81} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:97
+#         float r2 = SpecularRoughness * SpecularRoughness;
+	mul		$tmp75 Anisotropic $const18 	%line{97} %argrw{"wrr"}
 	sub		$tmp76 $const2 $tmp75 	%argrw{"wrr"}
 	sqrt		___375_aspect $tmp76 	%argrw{"wr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:82
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:98
 # 
-	mul		___375_r2 SpecularRoughness SpecularRoughness 	%line{82} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:84
-#     float alpha_y = r2 * aspect;
-	div		___375_alpha_x ___375_r2 ___375_aspect 	%line{84} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:85
+	mul		___375_r2 SpecularRoughness SpecularRoughness 	%line{98} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:100
+#         float alpha_y = r2 * aspect;
+	div		___375_alpha_x ___375_r2 ___375_aspect 	%line{100} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:101
 # 
-	mul		___375_alpha_y ___375_r2 ___375_aspect 	%line{85} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:87
+	mul		___375_alpha_y ___375_r2 ___375_aspect 	%line{101} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:103
 # 
-	sub		$tmp78 $const2 SpecularTint 	%line{87} %argrw{"wrr"}
+	sub		$tmp78 $const2 SpecularTint 	%line{103} %argrw{"wrr"}
 	mul		$tmp79 $const5 $tmp78 	%argrw{"wrr"}
 	mul		$tmp80 m_ctint SpecularTint 	%argrw{"wrr"}
 	add		___375_tmp_col $tmp79 $tmp80 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:89
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:105
 # 
-	mul		$tmp81 Specular $const19 	%line{89} %argrw{"wrr"}
+	mul		$tmp81 Specular $const19 	%line{105} %argrw{"wrr"}
 	mul		$tmp82 $tmp81 ___375_tmp_col 	%argrw{"wrr"}
 	sub		$tmp83 $const2 Metallic 	%argrw{"wrr"}
 	mul		$tmp84 $tmp82 $tmp83 	%argrw{"wrr"}
 	mul		$tmp85 BaseColor Metallic 	%argrw{"wrr"}
 	add		___375_Cspec0 $tmp84 $tmp85 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:91
-#       BSDF = BSDF + specular_weight *
-	eq		$tmp86 distribution $const20 	%line{91} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:107
+#           BSDF = BSDF + specular_weight *
+	eq		$tmp86 distribution $const20 	%line{107} %argrw{"wrr"}
 	neq		$tmp87 $tmp86 $const9 	%argrw{"wrr"}
 	if		$tmp87 128 131 	%argrw{"r"}
 	le		$tmp88 SpecularRoughness $const21 	%argrw{"wrr"}
 	neq		$tmp89 $tmp88 $const9 	%argrw{"wrr"}
 	assign		$tmp87 $tmp89 	%argrw{"wr"}
 	if		$tmp87 140 148 	%argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:97
-#                                                      BaseColor,
-	mul		$tmp92 $const19 Specular 	%line{97} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:113
+#                                                          BaseColor,
+	mul		$tmp92 $const19 Specular 	%line{113} %argrw{"wrr"}
 	sqrt		$tmp91 $tmp92 	%argrw{"wr"}
 	sub		$tmp93 $const2 $tmp91 	%argrw{"wrr"}
 	div		$tmp94 $const22 $tmp93 	%argrw{"wrr"}
 	sub		$tmp95 $tmp94 $const2 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:93
-#                                                      T,
-	closure		$tmp90 $const23 SpecularNormal T ___375_alpha_x ___375_alpha_y $tmp95 BaseColor ___375_Cspec0 	%line{93} %argrw{"wrrrrrrrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:92
-#                         microfacet_ggx_aniso_fresnel(SpecularNormal,
-	mul		$tmp96 $tmp90 specular_weight 	%line{92} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:109
+#                                                          T,
+	closure		$tmp90 $const23 SpecularNormal T ___375_alpha_x ___375_alpha_y $tmp95 BaseColor ___375_Cspec0 	%line{109} %argrw{"wrrrrrrrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:108
+#                             microfacet_ggx_aniso_fresnel(SpecularNormal,
+	mul		$tmp96 $tmp90 specular_weight 	%line{108} %argrw{"wrr"}
 	add		BSDF BSDF $tmp96 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:107
-#                                           BaseColor,
-	mul		$tmp99 $const19 Specular 	%line{107} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:123
+#                                               BaseColor,
+	mul		$tmp99 $const19 Specular 	%line{123} %argrw{"wrr"}
 	sqrt		$tmp98 $tmp99 	%argrw{"wr"}
 	sub		$tmp100 $const2 $tmp98 	%argrw{"wrr"}
 	div		$tmp101 $const22 $tmp100 	%argrw{"wrr"}
 	sub		$tmp102 $tmp101 $const2 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:102
-#                                           SpecularNormal,
-	closure		$tmp97 $const24 SpecularNormal T ___375_alpha_x ___375_alpha_y $tmp102 BaseColor ___375_Cspec0 	%line{102} %argrw{"wrrrrrrrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:118
+#                                               SpecularNormal,
+	closure		$tmp97 $const24 SpecularNormal T ___375_alpha_x ___375_alpha_y $tmp102 BaseColor ___375_Cspec0 	%line{118} %argrw{"wrrrrrrrr"}
 	mul		$tmp103 $tmp97 specular_weight 	%argrw{"wrr"}
 	add		BSDF BSDF $tmp103 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:113
-#     color Cspec0 = BaseColor * SpecularTint + color(1.0, 1.0, 1.0) * (1.0 - SpecularTint);
-	gt		$tmp104 final_transmission $const1 	%line{113} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:129
+#       {
+	gt		$tmp104 final_transmission $const1 	%line{129} %argrw{"wrr"}
 	if		$tmp104 218 218 	%argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:114
-#     float eta = backfacing() ? 1.0 / f : f;
-	mul		$tmp105 BaseColor SpecularTint 	%line{114} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:131
+#         float eta = backfacing() ? 1.0 / f : f;
+	mul		$tmp105 BaseColor SpecularTint 	%line{131} %argrw{"wrr"}
 	sub		$tmp107 $const2 SpecularTint 	%argrw{"wrr"}
 	mul		$tmp108 $const5 $tmp107 	%argrw{"wrr"}
 	add		___378_Cspec0 $tmp105 $tmp108 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:115
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:132
 # 
-	backfacing	$tmp109 	%line{115} %argrw{"w"}
+	backfacing	$tmp109 	%line{132} %argrw{"w"}
 	if		$tmp109 157 158 	%argrw{"r"}
 	div		___378_eta $const2 f 	%argrw{"wrr"}
 	assign		___378_eta f 	%argrw{"wr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:118
-#       float cosNO = dot(Normal, I);
-	eq		$tmp110 distribution $const20 	%line{118} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:135
+#         {
+	eq		$tmp110 distribution $const20 	%line{135} %argrw{"wrr"}
 	neq		$tmp111 $tmp110 $const9 	%argrw{"wrr"}
 	if		$tmp111 161 164 	%argrw{"r"}
 	le		$tmp112 DiffuseRoughness $const25 	%argrw{"wrr"}
 	neq		$tmp113 $tmp112 $const9 	%argrw{"wrr"}
 	assign		$tmp111 $tmp113 	%argrw{"wr"}
 	if		$tmp111 214 218 	%argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:119
-#       float Fr = fresnel_dielectric_cos(cosNO, eta);
-	dot		___379_cosNO Normal I 	%line{119} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:120
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:137
+#           float Fr = fresnel_dielectric_cos(cosNO, eta);
+	dot		___379_cosNO Normal I 	%line{137} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:138
 # 
-	functioncall	$const26 192 	%line{120} %argrw{"r"}
+	functioncall	$const26 192 	%line{138} %argrw{"r"}
 # C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_fresnel.h:13
 #   float c = fabs(cosi);
 	fabs		___368_c ___379_cosNO 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_fresnel.h"} %line{13} %argrw{"wr"}
@@ -590,75 +593,75 @@ code ___main___
 # C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_fresnel.h:26
 #   return result;
 	assign		___379_Fr ___368_result 	%line{26} %argrw{"wr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:123
-#       if (DiffuseRoughness <= 1e-2)
-	assign		___379_refl_roughness DiffuseRoughness 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl"} %line{123} %argrw{"wr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:124
-#         refl_roughness = 0.0;
-	le		$tmp130 DiffuseRoughness $const28 	%line{124} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:141
+#           if (DiffuseRoughness <= 1e-2)
+	assign		___379_refl_roughness DiffuseRoughness 	%filename{"C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl"} %line{141} %argrw{"wr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:142
+#             refl_roughness = 0.0;
+	le		$tmp130 DiffuseRoughness $const28 	%line{142} %argrw{"wrr"}
 	if		$tmp130 196 196 	%argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:125
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:143
 # 
-	assign		___379_refl_roughness $const3 	%line{125} %argrw{"wr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:127
-#       if (distribution == "GGX")
-	assign		___379_transmission_roughness ___379_refl_roughness 	%line{127} %argrw{"wr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:128
-#         transmission_roughness = 1.0 - (1.0 - refl_roughness) * (1.0 - TransmissionRoughness);
-	eq		$tmp131 distribution $const20 	%line{128} %argrw{"wrr"}
+	assign		___379_refl_roughness $const3 	%line{143} %argrw{"wr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:145
+#           if (distribution == "GGX")
+	assign		___379_transmission_roughness ___379_refl_roughness 	%line{145} %argrw{"wr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:146
+#             transmission_roughness = 1.0 - (1.0 - refl_roughness) * (1.0 - TransmissionRoughness);
+	eq		$tmp131 distribution $const20 	%line{146} %argrw{"wrr"}
 	if		$tmp131 203 203 	%argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:129
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:147
 # 
-	sub		$tmp132 $const2 ___379_refl_roughness 	%line{129} %argrw{"wrr"}
+	sub		$tmp132 $const2 ___379_refl_roughness 	%line{147} %argrw{"wrr"}
 	sub		$tmp133 $const2 TransmissionRoughness 	%argrw{"wrr"}
 	mul		$tmp134 $tmp132 $tmp133 	%argrw{"wrr"}
 	sub		___379_transmission_roughness $const2 $tmp134 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:134
-#                   (1.0 - Fr) * BaseColor *
-	mul		$tmp136 ___379_refl_roughness ___379_refl_roughness 	%line{134} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:133
-#                            Normal, refl_roughness * refl_roughness, eta, BaseColor, Cspec0) +
-	closure		$tmp135 $const29 Normal $tmp136 ___378_eta BaseColor ___378_Cspec0 	%line{133} %argrw{"wrrrrrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:152
+#                       (1.0 - Fr) * BaseColor *
+	mul		$tmp136 ___379_refl_roughness ___379_refl_roughness 	%line{152} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:151
+#                                Normal, refl_roughness * refl_roughness, eta, BaseColor, Cspec0) +
+	closure		$tmp135 $const29 Normal $tmp136 ___378_eta BaseColor ___378_Cspec0 	%line{151} %argrw{"wrrrrrr"}
 	mul		$tmp137 $tmp135 ___379_Fr 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:137
-#     }
-	mul		$tmp139 ___379_transmission_roughness ___379_transmission_roughness 	%line{137} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:136
-#                           Normal, transmission_roughness * transmission_roughness, eta));
-	closure		$tmp138 $const30 Normal $tmp139 ___378_eta 	%line{136} %argrw{"wrrrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:135
-#                       microfacet_ggx_refraction(
-	sub		$tmp140 $const2 ___379_Fr 	%line{135} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:155
+#         }
+	mul		$tmp139 ___379_transmission_roughness ___379_transmission_roughness 	%line{155} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:154
+#                               Normal, transmission_roughness * transmission_roughness, eta));
+	closure		$tmp138 $const30 Normal $tmp139 ___378_eta 	%line{154} %argrw{"wrrrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:153
+#                           microfacet_ggx_refraction(
+	sub		$tmp140 $const2 ___379_Fr 	%line{153} %argrw{"wrr"}
 	mul		$tmp141 $tmp140 BaseColor 	%argrw{"wrr"}
 	mul		$tmp142 $tmp138 $tmp141 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:134
-#                   (1.0 - Fr) * BaseColor *
-	add		$tmp143 $tmp137 $tmp142 	%line{134} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:132
-#                  (Fr * microfacet_ggx_fresnel(
-	mul		$tmp144 $tmp143 final_transmission 	%line{132} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:131
-#              final_transmission *
-	add		BSDF BSDF $tmp144 	%line{131} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:142
-#       //BSDF = BSDF +
-	mul		$tmp146 DiffuseRoughness DiffuseRoughness 	%line{142} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:141
-#                             Normal, DiffuseRoughness * DiffuseRoughness, eta, BaseColor, Cspec0);      
-	closure		$tmp145 $const31 Normal $tmp146 ___378_eta BaseColor ___378_Cspec0 	%line{141} %argrw{"wrrrrrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:152
+#                       (1.0 - Fr) * BaseColor *
+	add		$tmp143 $tmp137 $tmp142 	%line{152} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:150
+#                      (Fr * microfacet_ggx_fresnel(
+	mul		$tmp144 $tmp143 final_transmission 	%line{150} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:149
+#                  final_transmission *
+	add		BSDF BSDF $tmp144 	%line{149} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:162
+#           //BSDF = BSDF +
+	mul		$tmp146 DiffuseRoughness DiffuseRoughness 	%line{162} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:161
+#                                 Normal, DiffuseRoughness * DiffuseRoughness, eta, BaseColor, Cspec0);      
+	closure		$tmp145 $const31 Normal $tmp146 ___378_eta BaseColor ___378_Cspec0 	%line{161} %argrw{"wrrrrrr"}
 	mul		$tmp147 $tmp145 final_transmission 	%argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:140
-#              final_transmission * microfacet_multi_ggx_glass_fresnel(
-	add		BSDF BSDF $tmp147 	%line{140} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:149
-#     BSDF = BSDF + principled_clearcoat(
-	gt		$tmp148 Clearcoat $const1 	%line{149} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:160
+#                  final_transmission * microfacet_multi_ggx_glass_fresnel(
+	add		BSDF BSDF $tmp147 	%line{160} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:169
+#   {
+	gt		$tmp148 Clearcoat $const1 	%line{169} %argrw{"wrr"}
 	if		$tmp148 223 223 	%argrw{"r"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:151
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:172
 #   }
-	mul		$tmp150 ClearcoatRoughness ClearcoatRoughness 	%line{151} %argrw{"wrr"}
-# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf.osl:150
+	mul		$tmp150 ClearcoatRoughness ClearcoatRoughness 	%line{172} %argrw{"wrr"}
+# C:\\Users\\aleks\\source\\repos\\blender_b2r\\blender\\intern\\cycles\\kernel\\osl\\shaders\\node_principled_bsdf_b2r.osl:171
 #                       ClearcoatNormal, Clearcoat, ClearcoatRoughness * ClearcoatRoughness);
-	closure		$tmp149 $const32 ClearcoatNormal Clearcoat $tmp150 	%line{150} %argrw{"wrrrr"}
+	closure		$tmp149 $const32 ClearcoatNormal Clearcoat $tmp150 	%line{171} %argrw{"wrrrr"}
 	add		BSDF BSDF $tmp149 	%argrw{"wrr"}
 	end

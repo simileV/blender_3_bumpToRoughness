@@ -2770,6 +2770,8 @@ NODE_DEFINE(PrincipledBsdfNode)
   SOCKET_IN_NORMAL(clearcoat_normal, "Clearcoat Normal", zero_float3(), SocketType::LINK_NORMAL);
   SOCKET_IN_NORMAL(tangent, "Tangent", zero_float3(), SocketType::LINK_TANGENT);
   SOCKET_IN_NORMAL(specular_normal, "Specular Normal", zero_float3(), SocketType::LINK_NORMAL);
+  SOCKET_IN_FLOAT(specular_roughness, "Specular Roughness", 0.2f);
+  SOCKET_IN_FLOAT(diffuse_roughness, "Diffuse Roughness", 0.0f);
   SOCKET_IN_FLOAT(surface_mix_weight, "SurfaceMixWeight", 0.0f, SocketType::SVM_INTERNAL);
 
   SOCKET_OUT_CLOSURE(BSDF, "BSDF");
@@ -2874,7 +2876,10 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler,
                                  ShaderInput *p_ior,
                                  ShaderInput *p_transmission,
                                  ShaderInput *p_anisotropic_rotation,
-                                 ShaderInput *p_transmission_roughness)
+                                 ShaderInput *p_transmission_roughness,
+                                 ShaderInput *p_specular_roughness,
+                                 ShaderInput *p_diffuse_roughness
+)
 {
   ShaderInput *base_color_in = input("Base Color");
   ShaderInput *subsurface_color_in = input("Subsurface Color");
@@ -2906,6 +2911,10 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler,
   int subsurface_radius_offset = compiler.stack_assign(p_subsurface_radius);
   int subsurface_ior_offset = compiler.stack_assign(p_subsurface_ior);
   int subsurface_anisotropy_offset = compiler.stack_assign(p_subsurface_anisotropy);
+
+  int roughness_specular_offset = compiler.stack_assign(p_specular_roughness);
+  int roughness_diffuse_offset = compiler.stack_assign(p_diffuse_roughness);
+
 
   compiler.add_node(NODE_CLOSURE_BSDF,
                     compiler.encode_uchar4(closure,
@@ -2953,7 +2962,12 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler,
                     __float_as_int(ss_default.y),
                     __float_as_int(ss_default.z));
 
+  //compiler.add_node(specular_normal_offset);
+  //compiler.add_node(specular_normal_offset, roughness_specular_offset, roughness_diffuse_offset, 0);
   compiler.add_node(specular_normal_offset);
+  compiler.add_node(roughness_specular_offset);
+  compiler.add_node(roughness_diffuse_offset);
+
 }
 
 bool PrincipledBsdfNode::has_integrator_dependency()
@@ -2981,7 +2995,10 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler)
           input("IOR"),
           input("Transmission"),
           input("Anisotropic Rotation"),
-          input("Transmission Roughness"));
+          input("Transmission Roughness"),
+          input("Specular Roughness"),
+          input("Diffuse Roughness")
+  );
 }
 
 void PrincipledBsdfNode::compile(OSLCompiler &compiler)

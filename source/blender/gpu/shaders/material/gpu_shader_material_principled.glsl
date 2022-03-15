@@ -41,6 +41,8 @@ void node_bsdf_principled(vec4 base_color,
                           vec3 CN,
                           vec3 T,
                           vec3 SN,
+                          float roughness_specular,
+                          float roughness_diffuse,
                           const float do_diffuse,
                           const float do_clearcoat,
                           const float do_refraction,
@@ -57,7 +59,11 @@ void node_bsdf_principled(vec4 base_color,
   transmission *= (1.0 - metallic);
   float specular_weight = (1.0 - transmission);
   clearcoat = max(clearcoat, 0.0);
-  transmission_roughness = 1.0 - (1.0 - roughness) * (1.0 - transmission_roughness);
+
+  //transmission_roughness = 1.0 - (1.0 - roughness) * (1.0 - transmission_roughness);
+  //transmission_roughness = 1.0 - (1.0 - roughness_specular) * (1.0 - transmission_roughness);
+  transmission_roughness = 1.0 - (1.0 - roughness_diffuse) * (1.0 - transmission_roughness);
+
   specular = max(0.0, specular);
 
   CLOSURE_VARS_DECLARE_4(Diffuse, Glossy, Glossy, Refraction);
@@ -66,13 +72,14 @@ void node_bsdf_principled(vec4 base_color,
   in_Diffuse_0.albedo = mix(base_color.rgb, subsurface_color.rgb, subsurface);
 
   in_Glossy_1.N = SN; /* Normalized during eval. */
-  in_Glossy_1.roughness = roughness;
+  in_Glossy_1.roughness = roughness_specular;
 
   in_Glossy_2.N = CN; /* Normalized during eval. */
   in_Glossy_2.roughness = clearcoat_roughness;
 
   in_Refraction_3.N = N; /* Normalized during eval. */
-  in_Refraction_3.roughness = do_multiscatter != 0.0 ? roughness : transmission_roughness;
+  //in_Refraction_3.roughness = do_multiscatter != 0.0 ? roughness_specular : transmission_roughness;
+  in_Refraction_3.roughness = do_multiscatter != 0.0 ? roughness_diffuse : transmission_roughness;
   in_Refraction_3.ior = ior;
 
   CLOSURE_EVAL_FUNCTION_4(node_bsdf_principled, Diffuse, Glossy, Glossy, Refraction);
@@ -106,7 +113,9 @@ void node_bsdf_principled(vec4 base_color,
      * Separate Glass reflections and main specular reflections to match Cycles renderpasses. */
     out_Glossy_1.radiance = closure_mask_ssr_radiance(out_Glossy_1.radiance, ssr_id);
 
-    vec2 split_sum = brdf_lut(NV, roughness);
+    //vec2 split_sum = brdf_lut(NV, roughness);
+    //vec2 split_sum = brdf_lut(NV, roughness_diffuse);
+    vec2 split_sum = brdf_lut(NV, roughness_specular);
 
     vec3 glossy_radiance_final = vec3(0.0);
     if (transmission > 1e-5) {
@@ -204,6 +213,6 @@ void node_bsdf_principled(vec4 base_color,
 #else
 /* clang-format off */
 /* Stub principled because it is not compatible with volumetrics. */
-#  define node_bsdf_principled(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, aa, bb, cc, dd, ee, ff, gg, result) (result = CLOSURE_DEFAULT)
+#  define node_bsdf_principled(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, aa, bb, cc, dd, ee, ff, gg, hh, ii, result) (result = CLOSURE_DEFAULT)
 /* clang-format on */
 #endif
