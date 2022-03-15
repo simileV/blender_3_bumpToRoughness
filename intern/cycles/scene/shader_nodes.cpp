@@ -2964,9 +2964,16 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler,
 
   //compiler.add_node(specular_normal_offset);
   //compiler.add_node(specular_normal_offset, roughness_specular_offset, roughness_diffuse_offset, 0);
-  compiler.add_node(specular_normal_offset);
-  compiler.add_node(roughness_specular_offset);
-  compiler.add_node(roughness_diffuse_offset);
+  // 
+  //compiler.add_node(specular_normal_offset);
+  //compiler.add_node(roughness_specular_offset);
+  //compiler.add_node(roughness_diffuse_offset);
+
+
+    compiler.add_node(specular_normal_offset,
+                    roughness_specular_offset,
+                    roughness_diffuse_offset,
+                    roughness_diffuse_offset);
 
 }
 

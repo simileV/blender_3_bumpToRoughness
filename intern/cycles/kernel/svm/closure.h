@@ -200,7 +200,7 @@ ccl_device_noinline int svm_node_closure_bsdf(KernelGlobals kg,
 
       float3 weight = sd->svm_closure_weight * mix_weight;
 
-      //get specular normal
+      //get ABJ b2r params
       uint4 data_abj = read_node(kg, &offset);
       float3 specular_normal = stack_load_float3(stack, data_abj.x);
       float roughness_specular = stack_load_float(stack, data_abj.y);
@@ -237,7 +237,8 @@ ccl_device_noinline int svm_node_closure_bsdf(KernelGlobals kg,
 
           if (bsdf) {
             bsdf->N = N;
-            bsdf->roughness = roughness;
+            //bsdf->roughness = roughness;
+            bsdf->roughness = roughness_diffuse;
 
             /* setup bsdf */
             sd->flag |= bsdf_principled_diffuse_setup(bsdf, PRINCIPLED_DIFFUSE_FULL);
@@ -250,7 +251,8 @@ ccl_device_noinline int svm_node_closure_bsdf(KernelGlobals kg,
             bssrdf->radius = subsurface_radius * subsurface;
             bssrdf->albedo = mixed_ss_base_color;
             bssrdf->N = N;
-            bssrdf->roughness = roughness;
+            //bssrdf->roughness = roughness;
+            bssrdf->roughness = roughness_diffuse;
 
             /* Clamps protecting against bad/extreme and non physical values. */
             subsurface_ior = clamp(subsurface_ior, 1.01f, 3.8f);
@@ -271,7 +273,8 @@ ccl_device_noinline int svm_node_closure_bsdf(KernelGlobals kg,
 
         if (bsdf) {
           bsdf->N = N;
-          bsdf->roughness = roughness;
+          //bsdf->roughness = roughness;
+          bsdf->roughness = roughness_diffuse;
 
           /* setup bsdf */
           sd->flag |= bsdf_principled_diffuse_setup(bsdf, PRINCIPLED_DIFFUSE_FULL);
@@ -319,13 +322,15 @@ ccl_device_noinline int svm_node_closure_bsdf(KernelGlobals kg,
                   NULL;
 
           if (bsdf && extra) {
-            bsdf->N = N;
+            //bsdf->N = N;
+            bsdf->N = specular_normal;
             bsdf->ior = (2.0f / (1.0f - safe_sqrtf(0.08f * specular))) - 1.0f;
             bsdf->T = T;
             bsdf->extra = extra;
 
             float aspect = safe_sqrtf(1.0f - anisotropic * 0.9f);
-            float r2 = roughness * roughness;
+            //float r2 = roughness * roughness;
+            float r2 = roughness_specular * roughness_specular;
 
             bsdf->alpha_x = r2 / aspect;
             bsdf->alpha_y = r2 * aspect;
@@ -346,7 +351,7 @@ ccl_device_noinline int svm_node_closure_bsdf(KernelGlobals kg,
 
             /* setup bsdf */
             if (distribution == CLOSURE_BSDF_MICROFACET_GGX_GLASS_ID ||
-                roughness <= 0.075f) /* use single-scatter GGX */
+                roughness_specular <= 0.075f) /* use single-scatter GGX */
               sd->flag |= bsdf_microfacet_ggx_fresnel_setup(bsdf, sd);
             else /* use multi-scatter GGX */
               sd->flag |= bsdf_microfacet_multi_ggx_fresnel_setup(bsdf, sd);
@@ -368,7 +373,8 @@ ccl_device_noinline int svm_node_closure_bsdf(KernelGlobals kg,
 
           if (roughness <= 5e-2f ||
               distribution == CLOSURE_BSDF_MICROFACET_GGX_GLASS_ID) { /* use single-scatter GGX */
-            float refl_roughness = roughness;
+            //float refl_roughness = roughness;
+            float refl_roughness = roughness_specular;
 
             /* reflection */
 #  ifdef __CAUSTICS_TRICKS__
@@ -383,7 +389,8 @@ ccl_device_noinline int svm_node_closure_bsdf(KernelGlobals kg,
                                    NULL;
 
               if (bsdf && extra) {
-                bsdf->N = N;
+                //bsdf->N = N;
+                bsdf->N = specular_normal;
                 bsdf->T = make_float3(0.0f, 0.0f, 0.0f);
                 bsdf->extra = extra;
 
@@ -501,7 +508,8 @@ ccl_device_noinline int svm_node_closure_bsdf(KernelGlobals kg,
       if (bsdf) {
         bsdf->N = N;
 
-        float roughness = param1;
+        //float roughness = param1;
+        float roughness = param1; // 0 or 1 (metallic)
 
         if (roughness == 0.0f) {
           sd->flag |= bsdf_diffuse_setup((ccl_private DiffuseBsdf *)bsdf);
