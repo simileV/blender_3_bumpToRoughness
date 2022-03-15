@@ -117,6 +117,17 @@ static void node_declare(NodeDeclarationBuilder &b)
     .max(1.0f)
     .subtype(PROP_FACTOR);
 
+  //  b.add_input<decl::Float>(N_("Specular Roughness"))
+  //    .default_value(0.2f)
+  //    .min(0.0f)
+  //    .max(1.0f);
+
+  //b.add_input<decl::Float>(N_("Diffuse Roughness"))
+  //    .default_value(0.2f)
+  //    .min(0.0f)
+  //    .max(1.0f);
+
+
   b.add_output<decl::Shader>(N_("BSDF"));
 }
 

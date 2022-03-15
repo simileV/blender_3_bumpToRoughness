@@ -200,6 +200,16 @@ ccl_device_noinline int svm_node_closure_bsdf(KernelGlobals kg,
 
       float3 weight = sd->svm_closure_weight * mix_weight;
 
+      //get specular normal
+      uint4 data_abj = read_node(kg, &offset);
+      float3 specular_normal = stack_load_float3(stack, data_abj.x);
+      float roughness_specular = stack_load_float(stack, data_abj.y);
+      float roughness_diffuse = stack_load_float(stack, data_abj.z);
+
+      //get roughnes_specular
+      // 
+      //get roughnes_diffuse
+
 #  ifdef __SUBSURFACE__
       float3 mixed_ss_base_color = subsurface_color * subsurface +
                                    base_color * (1.0f - subsurface);
