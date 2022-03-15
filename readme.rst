@@ -1,4 +1,4 @@
-Bump to Roughness in Cycles in OSL, just shoe-horning onto Principled shader into the Blender Source. See https://bergjones.artstation.com/projects/xYNql4 for details and video comparison. The OSL shaders are at https://github.com/simileV/abj_osl_b2r
+Bump to Roughness in Cycles in OSL, just shoe-horning onto Principled shader into the Blender Source. I have added a Specular Normal input, a specular roughness input, and a diffuse roughness input. You must use OIIO txmake with bumpslopes on a normal or greyscale map to use with Pixar's modified shader. See https://bergjones.artstation.com/projects/xYNql4 for details and video comparison. The OSL shaders are at https://github.com/simileV/abj_osl_b2r
 
 .. figure:: https://cdna.artstation.com/p/assets/images/images/047/176/298/large/similev-compb2r-2.jpg?1646936571
    :scale: 100 %
