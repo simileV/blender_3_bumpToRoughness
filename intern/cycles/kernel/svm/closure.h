@@ -200,11 +200,26 @@ ccl_device_noinline int svm_node_closure_bsdf(KernelGlobals kg,
 
       float3 weight = sd->svm_closure_weight * mix_weight;
 
+
+      //uint4 data_node2 = read_node(kg, &offset);
+      //float3 T = stack_load_float3(stack, data_node.y);
+
       //get ABJ b2r params
-      uint4 data_abj = read_node(kg, &offset);
-      float3 specular_normal = stack_load_float3(stack, data_abj.x);
-      float roughness_specular = stack_load_float(stack, data_abj.y);
-      float roughness_diffuse = stack_load_float(stack, data_abj.z);
+      //uint4 data_abj = read_node(kg, &offset);
+      //float3 specular_normal = stack_load_float3(stack, data_abj.x);
+      //float roughness_specular = stack_load_float(stack, data_abj.y);
+      //float roughness_diffuse = stack_load_float(stack, data_abj.z);
+
+
+      // get ABJ b2r params
+      uint4 data_abj_0 = read_node(kg, &offset);
+      float3 specular_normal = stack_load_float3(stack, data_abj_0.x);
+
+      uint4 data_abj_1 = read_node(kg, &offset);
+      float roughness_specular = stack_load_float(stack, data_abj_1.x);
+
+      uint4 data_abj_2 = read_node(kg, &offset);
+      float roughness_diffuse = stack_load_float(stack, data_abj_2.x);
 
       //get roughnes_specular
       // 

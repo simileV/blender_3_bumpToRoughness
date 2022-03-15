@@ -546,9 +546,28 @@ class PrincipledBsdfNode : public BsdfBaseNode {
                ShaderInput *ior,
                ShaderInput *transmission,
                ShaderInput *anisotropic_rotation,
-               ShaderInput *transmission_roughness,
-               ShaderInput *specular_roughness,
-               ShaderInput *diffuse_roughness);
+               ShaderInput *transmission_roughness);
+
+  //void compile(SVMCompiler &compiler,
+  //             ShaderInput *metallic,
+  //             ShaderInput *subsurface,
+  //             ShaderInput *subsurface_radius,
+  //             ShaderInput *subsurface_ior,
+  //             ShaderInput *subsurface_anisotropy,
+  //             ShaderInput *specular,
+  //             ShaderInput *roughness,
+  //             ShaderInput *specular_tint,
+  //             ShaderInput *anisotropic,
+  //             ShaderInput *sheen,
+  //             ShaderInput *sheen_tint,
+  //             ShaderInput *clearcoat,
+  //             ShaderInput *clearcoat_roughness,
+  //             ShaderInput *ior,
+  //             ShaderInput *transmission,
+  //             ShaderInput *anisotropic_rotation,
+  //             ShaderInput *transmission_roughness,
+  //             ShaderInput *specular_roughness,
+  //             ShaderInput *diffuse_roughness);
 
   NODE_SOCKET_API(float3, base_color)
   NODE_SOCKET_API(float3, subsurface_color)

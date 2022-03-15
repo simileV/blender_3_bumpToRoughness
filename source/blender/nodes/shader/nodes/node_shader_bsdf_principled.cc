@@ -105,27 +105,28 @@ static void node_declare(NodeDeclarationBuilder &b)
   b.add_input<decl::Vector>(N_("Tangent")).hide_value();
   b.add_input<decl::Vector>(N_("Specular Normal")).hide_value();
 
-  b.add_input<decl::Float>(N_("Specular_Roughness"))
+  //b.add_input<decl::Float>(N_("Specular_Roughness"))
+  //  .default_value(0.2f)
+  //  .min(0.0f)
+  //  .max(1.0f)
+  //  .subtype(PROP_FACTOR);
+
+  //b.add_input<decl::Float>(N_("Diffuse_Roughness"))
+  //  .default_value(0.2f)
+  //  .min(0.0f)
+  //  .max(1.0f)
+  //  .subtype(PROP_FACTOR);
+
+
+  b.add_input<decl::Float>(N_("Specular Roughness"))
     .default_value(0.2f)
     .min(0.0f)
-    .max(1.0f)
-    .subtype(PROP_FACTOR);
+    .max(1.0f);
 
-  b.add_input<decl::Float>(N_("Diffuse_Roughness"))
-    .default_value(0.2f)
-    .min(0.0f)
-    .max(1.0f)
-    .subtype(PROP_FACTOR);
-
-  //  b.add_input<decl::Float>(N_("Specular Roughness"))
-  //    .default_value(0.2f)
-  //    .min(0.0f)
-  //    .max(1.0f);
-
-  //b.add_input<decl::Float>(N_("Diffuse Roughness"))
-  //    .default_value(0.2f)
-  //    .min(0.0f)
-  //    .max(1.0f);
+  b.add_input<decl::Float>(N_("Diffuse Roughness"))
+      .default_value(0.2f)
+      .min(0.0f)
+      .max(1.0f);
 
 
   b.add_output<decl::Shader>(N_("BSDF"));

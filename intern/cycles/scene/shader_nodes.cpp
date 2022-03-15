@@ -2859,6 +2859,27 @@ void PrincipledBsdfNode::attributes(Shader *shader, AttributeRequestSet *attribu
   ShaderNode::attributes(shader, attributes);
 }
 
+//void PrincipledBsdfNode::compile(SVMCompiler &compiler,
+//                                 ShaderInput *p_metallic,
+//                                 ShaderInput *p_subsurface,
+//                                 ShaderInput *p_subsurface_radius,
+//                                 ShaderInput *p_subsurface_ior,
+//                                 ShaderInput *p_subsurface_anisotropy,
+//                                 ShaderInput *p_specular,
+//                                 ShaderInput *p_roughness,
+//                                 ShaderInput *p_specular_tint,
+//                                 ShaderInput *p_anisotropic,
+//                                 ShaderInput *p_sheen,
+//                                 ShaderInput *p_sheen_tint,
+//                                 ShaderInput *p_clearcoat,
+//                                 ShaderInput *p_clearcoat_roughness,
+//                                 ShaderInput *p_ior,
+//                                 ShaderInput *p_transmission,
+//                                 ShaderInput *p_anisotropic_rotation,
+//                                 ShaderInput *p_transmission_roughness,
+//                                 ShaderInput *p_specular_roughness,
+//                                 ShaderInput *p_diffuse_roughness)
+
 void PrincipledBsdfNode::compile(SVMCompiler &compiler,
                                  ShaderInput *p_metallic,
                                  ShaderInput *p_subsurface,
@@ -2876,10 +2897,7 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler,
                                  ShaderInput *p_ior,
                                  ShaderInput *p_transmission,
                                  ShaderInput *p_anisotropic_rotation,
-                                 ShaderInput *p_transmission_roughness,
-                                 ShaderInput *p_specular_roughness,
-                                 ShaderInput *p_diffuse_roughness
-)
+                                 ShaderInput *p_transmission_roughness)
 {
   ShaderInput *base_color_in = input("Base Color");
   ShaderInput *subsurface_color_in = input("Subsurface Color");
@@ -2887,6 +2905,10 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler,
   ShaderInput *specular_normal_in = input("Specular Normal");
   ShaderInput *clearcoat_normal_in = input("Clearcoat Normal");
   ShaderInput *tangent_in = input("Tangent");
+
+  ShaderInput *specular_roughness_in = input("Specular Roughness");
+  ShaderInput *diffuse_roughness_in = input("Diffuse Roughness");
+
 
   float3 weight = one_float3();
 
@@ -2912,8 +2934,10 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler,
   int subsurface_ior_offset = compiler.stack_assign(p_subsurface_ior);
   int subsurface_anisotropy_offset = compiler.stack_assign(p_subsurface_anisotropy);
 
-  int roughness_specular_offset = compiler.stack_assign(p_specular_roughness);
-  int roughness_diffuse_offset = compiler.stack_assign(p_diffuse_roughness);
+  //int roughness_specular_offset = compiler.stack_assign(p_specular_roughness);
+  //int roughness_diffuse_offset = compiler.stack_assign(p_diffuse_roughness);
+  int roughness_specular_offset = compiler.stack_assign(specular_roughness_in);
+  int roughness_diffuse_offset = compiler.stack_assign(diffuse_roughness_in);
 
 
   compiler.add_node(NODE_CLOSURE_BSDF,
@@ -2965,15 +2989,15 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler,
   //compiler.add_node(specular_normal_offset);
   //compiler.add_node(specular_normal_offset, roughness_specular_offset, roughness_diffuse_offset, 0);
   // 
-  //compiler.add_node(specular_normal_offset);
-  //compiler.add_node(roughness_specular_offset);
-  //compiler.add_node(roughness_diffuse_offset);
+  compiler.add_node(specular_normal_offset);
+  compiler.add_node(roughness_specular_offset);
+  compiler.add_node(roughness_diffuse_offset);
 
 
-    compiler.add_node(specular_normal_offset,
-                    roughness_specular_offset,
-                    roughness_diffuse_offset,
-                    roughness_diffuse_offset);
+    //compiler.add_node(specular_normal_offset,
+                    //roughness_specular_offset,
+                    //roughness_diffuse_offset,
+                    //roughness_diffuse_offset);
 
 }
 
@@ -3002,9 +3026,9 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler)
           input("IOR"),
           input("Transmission"),
           input("Anisotropic Rotation"),
-          input("Transmission Roughness"),
-          input("Specular Roughness"),
-          input("Diffuse Roughness")
+          input("Transmission Roughness")
+          //input("Specular Roughness"),
+          //input("Diffuse Roughness")
   );
 }
 
