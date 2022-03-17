@@ -1405,6 +1405,30 @@ class BumpNode : public ShaderNode {
   NODE_SOCKET_API(float, distance)
 };
 
+class BumpToRoughnessNode : public ShaderNode {
+ public:
+  SHADER_NODE_CLASS(BumpToRoughnessNode)
+  void constant_fold(const ConstantFolder &folder);
+  //bool has_spatial_varying()
+  //{
+  //  return true;
+  //}
+  //virtual int get_feature()
+  //{
+  //  return KERNEL_FEATURE_NODE_BUMP;
+  //}
+
+  //NODE_SOCKET_API(bool, invert)
+  //NODE_SOCKET_API(bool, use_object_space)
+  //NODE_SOCKET_API(float, height)
+  //NODE_SOCKET_API(float, sample_center)
+  //NODE_SOCKET_API(float, sample_x)
+  //NODE_SOCKET_API(float, sample_y)
+  //NODE_SOCKET_API(float3, normal)
+  //NODE_SOCKET_API(float, strength)
+  //NODE_SOCKET_API(float, distance)
+};
+
 class CurvesNode : public ShaderNode {
  public:
   explicit CurvesNode(const NodeType *node_type);

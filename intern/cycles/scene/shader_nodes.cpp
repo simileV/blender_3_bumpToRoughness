@@ -6558,6 +6558,103 @@ void BumpNode::constant_fold(const ConstantFolder &folder)
   /* TODO(sergey): Ignore bump with zero strength. */
 }
 
+
+
+/* BumpToRoughnessNode */
+
+NODE_DEFINE(BumpToRoughnessNode)
+{
+  NodeType *type = NodeType::add("bump_to_roughness", create, NodeType::SHADER);
+
+  //SOCKET_BOOLEAN(invert, "Invert", false);
+  //SOCKET_BOOLEAN(use_object_space, "UseObjectSpace", false);
+
+  ///* this input is used by the user, but after graph transform it is no longer
+  // * used and moved to sampler center/x/y instead */
+  //SOCKET_IN_FLOAT(height, "Height", 1.0f);
+
+  //SOCKET_IN_FLOAT(sample_center, "SampleCenter", 0.0f);
+  //SOCKET_IN_FLOAT(sample_x, "SampleX", 0.0f);
+  //SOCKET_IN_FLOAT(sample_y, "SampleY", 0.0f);
+  //SOCKET_IN_NORMAL(normal, "Normal", zero_float3(), SocketType::LINK_NORMAL);
+  //SOCKET_IN_FLOAT(strength, "Strength", 1.0f);
+  //SOCKET_IN_FLOAT(distance, "Distance", 0.1f);
+
+  SOCKET_OUT_NORMAL(normal, "Normal");
+  //SOCKET_OUT_NORMAL(normal, "Normal2");
+
+  return type;
+}
+
+BumpToRoughnessNode::BumpToRoughnessNode() : ShaderNode(get_node_type())
+{
+  //special_type = SHADER_SPECIAL_TYPE_BUMP;
+  special_type = SHADER_SPECIAL_TYPE_NONE;
+}
+
+void BumpToRoughnessNode::compile(SVMCompiler &compiler)
+{
+  //ShaderInput *center_in = input("SampleCenter");
+  //ShaderInput *dx_in = input("SampleX");
+  //ShaderInput *dy_in = input("SampleY");
+  //ShaderInput *normal_in = input("Normal");
+  //ShaderInput *strength_in = input("Strength");
+  //ShaderInput *distance_in = input("Distance");
+  //ShaderOutput *normal_out = output("Normal");
+
+  ///* pack all parameters in the node */
+  //compiler.add_node(NODE_SET_BUMP,
+  //                  compiler.encode_uchar4(compiler.stack_assign_if_linked(normal_in),
+  //                                         compiler.stack_assign(distance_in),
+  //                                         invert,
+  //                                         use_object_space),
+  //                  compiler.encode_uchar4(compiler.stack_assign(center_in),
+  //                                         compiler.stack_assign(dx_in),
+  //                                         compiler.stack_assign(dy_in),
+  //                                         compiler.stack_assign(strength_in)),
+  //                  compiler.stack_assign(normal_out));
+}
+
+void BumpToRoughnessNode::compile(OSLCompiler &compiler)
+{
+  //compiler.parameter(this, "invert");
+  //compiler.parameter(this, "use_object_space");
+  //compiler.add(this, "node_bump");
+}
+
+void BumpToRoughnessNode::constant_fold(const ConstantFolder &folder)
+{
+  //ShaderInput *height_in = input("Height");
+  //ShaderInput *normal_in = input("Normal");
+
+  //if (height_in->link == NULL) {
+  //  if (normal_in->link == NULL) {
+  //    GeometryNode *geom = folder.graph->create_node<GeometryNode>();
+  //    folder.graph->add(geom);
+  //    folder.bypass(geom->output("Normal"));
+  //  }
+  //  else {
+  //    folder.bypass(normal_in->link);
+  //  }
+  //}
+
+  /* TODO(sergey): Ignore bump with zero strength. */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Curves node */
 
 CurvesNode::CurvesNode(const NodeType *node_type) : ShaderNode(node_type)

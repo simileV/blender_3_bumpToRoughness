@@ -694,6 +694,14 @@ static ShaderNode *add_node(Scene *scene,
     bump->set_invert(b_bump_node.invert());
     node = bump;
   }
+
+  else if (b_node.is_a(&RNA_ShaderNodeBumpToRoughness)) {
+    BL::ShaderNodeBumpToRoughness b_bump_node(b_node);
+    BumpToRoughnessNode *b2r = graph->create_node<BumpToRoughnessNode>();
+    //b2r->set_invert(b_bump_node.invert());
+    node = b2r;
+  }
+
   else if (b_node.is_a(&RNA_ShaderNodeScript)) {
 #ifdef WITH_OSL
     if (scene->shader_manager->use_osl()) {
