@@ -1166,6 +1166,7 @@ void BKE_nodetree_remove_layer_n(struct bNodeTree *ntree, struct Scene *scene, i
 #define SH_NODE_VECTOR_ROTATE 708
 #define SH_NODE_CURVE_FLOAT 709
 #define SH_NODE_POINT_INFO 710
+#define SH_NODE_BUMP_TO_ROUGHNESS 711
 
 /** \} */
 

@@ -4581,6 +4581,7 @@ static void registerShaderNodes()
   register_node_type_sh_tex_coord();
   register_node_type_sh_particle_info();
   register_node_type_sh_bump();
+  register_node_type_sh_bump_to_roughness();
   register_node_type_sh_vertex_color();
 
   register_node_type_sh_background();

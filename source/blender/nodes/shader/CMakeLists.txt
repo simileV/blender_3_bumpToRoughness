@@ -43,6 +43,7 @@ set(SRC
   nodes/node_shader_bsdf_transparent.cc
   nodes/node_shader_bsdf_velvet.cc
   nodes/node_shader_bump.cc
+  nodes/node_shader_bump_to_roughness.cc
   nodes/node_shader_camera.cc
   nodes/node_shader_clamp.cc
   nodes/node_shader_color_ramp.cc
