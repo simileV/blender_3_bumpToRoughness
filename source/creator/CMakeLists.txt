@@ -434,24 +434,14 @@ if(WITH_INTERNATIONAL)
   unset(_locale_dir)
 endif()
 
-# color management
+# color management ACES
 if(WITH_OPENCOLORIO)
   install(
-    DIRECTORY ${CMAKE_SOURCE_DIR}/release/datafiles/colormanagement
+    # DIRECTORY ${CMAKE_SOURCE_DIR}/release/datafiles/colormanagement
+    DIRECTORY "C:/Users/aleks/Desktop/backupBlender/colormanagement"
     DESTINATION ${TARGETDIR_VER}/datafiles
   )
 endif()
-
-# helpful tip when using make
-if("${CMAKE_GENERATOR}" MATCHES ".*Makefiles.*")
-  # message after building.
-  add_custom_command(
-    TARGET blender POST_BUILD MAIN_DEPENDENCY blender
-    COMMAND ${CMAKE_COMMAND} -E
-            echo 'now run: \"make install\" to copy runtime files and scripts to ${TARGETDIR_VER}'
-  )
-endif()
-
 
 # -----------------------------------------------------------------------------
 # Install Targets (Platform Specific)
@@ -1160,7 +1150,6 @@ delayed_do_install(${TARGETDIR_VER})
 
 unset(BLENDER_TEXT_FILES)
 unset(BLENDER_TEXT_FILES_DESTINATION)
-
 
 # -----------------------------------------------------------------------------
 # Geometry Icons
