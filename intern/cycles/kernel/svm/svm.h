@@ -330,6 +330,12 @@ ccl_device void svm_eval_nodes(KernelGlobals kg,
       case NODE_TEX_NOISE:
         offset = svm_node_tex_noise(kg, sd, stack, node.y, node.z, node.w, offset);
         break;
+      //case NODE_SET_BUMP_TO_ROUGHNESS:
+      //  IF_KERNEL_NODES_FEATURE(BUMP_TO_ROUGHNESS)
+      //  {
+      //    svm_node_set_bump(kg, sd, stack, node);
+      //  }
+      //  break;
       case NODE_SET_BUMP:
         IF_KERNEL_NODES_FEATURE(BUMP)
         {

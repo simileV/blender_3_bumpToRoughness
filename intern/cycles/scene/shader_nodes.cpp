@@ -6588,8 +6588,8 @@ NODE_DEFINE(BumpToRoughnessNode)
 
 BumpToRoughnessNode::BumpToRoughnessNode() : ShaderNode(get_node_type())
 {
-  //special_type = SHADER_SPECIAL_TYPE_BUMP;
-  special_type = SHADER_SPECIAL_TYPE_NONE;
+  special_type = SHADER_SPECIAL_TYPE_BUMP;
+  //special_type = SHADER_SPECIAL_TYPE_NONE;
 }
 
 void BumpToRoughnessNode::compile(SVMCompiler &compiler)
@@ -6600,10 +6600,10 @@ void BumpToRoughnessNode::compile(SVMCompiler &compiler)
   //ShaderInput *normal_in = input("Normal");
   //ShaderInput *strength_in = input("Strength");
   //ShaderInput *distance_in = input("Distance");
-  //ShaderOutput *normal_out = output("Normal");
+  ShaderOutput *normal_out = output("Normal");
 
   ///* pack all parameters in the node */
-  //compiler.add_node(NODE_SET_BUMP,
+  //compiler.add_node(NODE_SET_BUMP_TO_ROUGHNESS,
   //                  compiler.encode_uchar4(compiler.stack_assign_if_linked(normal_in),
   //                                         compiler.stack_assign(distance_in),
   //                                         invert,
@@ -6612,7 +6612,7 @@ void BumpToRoughnessNode::compile(SVMCompiler &compiler)
   //                                         compiler.stack_assign(dx_in),
   //                                         compiler.stack_assign(dy_in),
   //                                         compiler.stack_assign(strength_in)),
-  //                  compiler.stack_assign(normal_out));
+                    //compiler.stack_assign(normal_out));
 }
 
 void BumpToRoughnessNode::compile(OSLCompiler &compiler)

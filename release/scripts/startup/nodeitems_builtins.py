@@ -384,6 +384,7 @@ shader_node_categories = [
         NodeItem("ShaderNodeUVMap"),
         NodeItem("ShaderNodeVertexColor"),
         NodeItem("ShaderNodeUVAlongStroke", poll=line_style_shader_nodes_poll),
+        NodeItem("ShaderNodeBumpToRoughness"),
     ]),
     ShaderNodeCategory("SH_NEW_OUTPUT", "Output", items=[
         NodeItem("ShaderNodeOutputMaterial", poll=object_eevee_cycles_shader_nodes_poll),
