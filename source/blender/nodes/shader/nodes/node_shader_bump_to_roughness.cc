@@ -33,10 +33,11 @@ static void node_declare(NodeDeclarationBuilder &b)
    b.add_input<decl::Float>(N_("bumpNormalGain")).default_value(1.0f).min(0.0f);
    b.add_input<decl::Float>(N_("anisotropyGain")).default_value(1.0f).min(0.0f);
 
-  b.add_output<decl::Vector>(N_("resultBumpNormal"));
-   b.add_output<decl::Float>(N_("resultRoughness"));
-   b.add_output<decl::Float>(N_("resultAnisotropy"));
-   b.add_output<decl::Vector>(N_("resultAnisotropyDirection"));
+   b.add_output<decl::Vector>(N_("resultBumpNormal"));
+   b.add_output<decl::Vector>(N_("resultBumpColor"));
+   //b.add_output<decl::Float>(N_("resultRoughness"));
+   //b.add_output<decl::Float>(N_("resultAnisotropy"));
+   //b.add_output<decl::Vector>(N_("resultAnisotropyDirection"));
 }
 
 static void node_shader_buts_bump_to_roughness(uiLayout *layout,

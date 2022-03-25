@@ -1288,7 +1288,7 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   uint4 data_base_color = read_node(kg, &offset);
   float3 myColor = stack_load_float3(stack, data_base_color.x);
 
-  float3 myNormal = stack_load_float3(stack, data_base_color.y);
+  //float3 myNormal = stack_load_float3(stack, data_base_color.y);
 
   //  float3 N = stack_valid(data_node.x) ? stack_load_float3(stack, data_node.x) : sd->N;
   //if (!(sd->type & PRIMITIVE_CURVE)) {
@@ -1296,8 +1296,8 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   //}
 
   if (stack_valid(nodeOut)) {
-    //stack_store_float3(stack, nodeOut, myColor);
-    stack_store_float3(stack, nodeOut, myNormal);
+    stack_store_float3(stack, nodeOut, myColor);
+    //stack_store_float3(stack, nodeOut, myNormal);
   }
 
   //if (stack_valid(nodeOut)) {
@@ -1353,11 +1353,27 @@ ccl_device_noinline int svm_bump_to_roughness2(KernelGlobals kg,
                                               uint4 nodeOut,
                                               int offset)
 {
-  uint4 data_base_color = read_node(kg, &offset);
+  //uint4 data_normal0 = read_node(kg, &offset);
+
+    uint4 data_base_color = read_node(kg, &offset);
   float3 myColor = stack_load_float3(stack, data_base_color.x);
 
-   if (stack_valid(nodeOut.w))
-     stack_store_float3(stack, nodeOut.w, myColor);
+  uint4 data_normal = read_node(kg, &offset);
+  float3 myNormal = stack_load_float3(stack, data_normal.y);
+
+  //uint4 data_normal= read_node(kg, &offset);
+  //float3 myNormal = stack_load_float3(stack, nodeOut.x);
+
+  //uint4 data_base_color = read_node(kg, &offset);
+  ////uint4 data_base_color = read_node(kg, &offset);
+  //float3 myColor = stack_load_float3(stack, data_base_color.x);
+
+  if (stack_valid(nodeOut.z))
+     stack_store_float3(stack, nodeOut.z, myColor);
+
+  if (stack_valid(nodeOut.w))
+    stack_store_float3(stack, nodeOut.w, myNormal);
+
 
 
 
