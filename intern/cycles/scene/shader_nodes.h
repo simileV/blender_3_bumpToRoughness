@@ -1419,14 +1419,14 @@ class BumpToRoughnessNode : public ShaderNode {
                 ShaderInput *b5_dh2dsdt);*/
 
   NODE_SOCKET_API(float3, test_color)
-  // NODE_SOCKET_API(float3, normal)
-  // NODE_SOCKET_API(float, b0_h)
-  // NODE_SOCKET_API(float, b1_dhds)
-  // NODE_SOCKET_API(float, b2_dhdt)
+   NODE_SOCKET_API(float3, normal)
+   NODE_SOCKET_API(float, b0_h)
+   NODE_SOCKET_API(float, b1_dhds)
+   NODE_SOCKET_API(float, b2_dhdt)
 
-  // NODE_SOCKET_API(float, b3_dhds2)
-  // NODE_SOCKET_API(float, b4_dhdt2)
-  // NODE_SOCKET_API(float, b5_dh2dsdt)
+   NODE_SOCKET_API(float, b3_dhds2)
+   NODE_SOCKET_API(float, b4_dhdt2)
+   NODE_SOCKET_API(float, b5_dh2dsdt)
 };
 
 class CurvesNode : public ShaderNode {

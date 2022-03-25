@@ -18,25 +18,25 @@ static void node_declare(NodeDeclarationBuilder &b)
 {
   b.add_input<decl::Color>(N_("test_color")).default_value({1, 1, 0, 1});
 
-  // b.add_input<decl::Vector>(N_("Normal")).hide_value();
+   b.add_input<decl::Vector>(N_("Normal")).hide_value();
 
-  // b.add_input<decl::Float>(N_("b0_h")).default_value(1.0f).hide_value();
-  // b.add_input<decl::Float>(N_("b1_dhds")).default_value(1.0f).hide_value();
-  // b.add_input<decl::Float>(N_("b2_dhdt")).default_value(1.0f).hide_value();
-  // b.add_input<decl::Float>(N_("b3_dhds2")).default_value(1.0f).hide_value();
-  // b.add_input<decl::Float>(N_("b4_dhdt2")).default_value(1.0f).hide_value();
-  // b.add_input<decl::Float>(N_("b5_dh2dsdt")).default_value(1.0f).hide_value();
+   b.add_input<decl::Float>(N_("b0_h")).default_value(1.0f).hide_value();
+   b.add_input<decl::Float>(N_("b1_dhds")).default_value(1.0f).hide_value();
+   b.add_input<decl::Float>(N_("b2_dhdt")).default_value(1.0f).hide_value();
+   b.add_input<decl::Float>(N_("b3_dhds2")).default_value(1.0f).hide_value();
+   b.add_input<decl::Float>(N_("b4_dhdt2")).default_value(1.0f).hide_value();
+   b.add_input<decl::Float>(N_("b5_dh2dsdt")).default_value(1.0f).hide_value();
 
-  //// b.add_input<decl::Bool>(N_("invertBumpNormal")).default_value(false);
-  // b.add_input<decl::Float>(N_("baseRoughness")).default_value(0.001f).min(0.0f);
-  // b.add_input<decl::Float>(N_("gain")).default_value(1.0f).min(0.0f);
-  // b.add_input<decl::Float>(N_("bumpNormalGain")).default_value(1.0f).min(0.0f);
-  // b.add_input<decl::Float>(N_("anisotropyGain")).default_value(1.0f).min(0.0f);
+  // b.add_input<decl::Bool>(N_("invertBumpNormal")).default_value(false);
+   b.add_input<decl::Float>(N_("baseRoughness")).default_value(0.001f).min(0.0f);
+   b.add_input<decl::Float>(N_("gain")).default_value(1.0f).min(0.0f);
+   b.add_input<decl::Float>(N_("bumpNormalGain")).default_value(1.0f).min(0.0f);
+   b.add_input<decl::Float>(N_("anisotropyGain")).default_value(1.0f).min(0.0f);
 
   b.add_output<decl::Vector>(N_("resultBumpNormal"));
-  // b.add_output<decl::Float>(N_("resultRoughness"));
-  // b.add_output<decl::Float>(N_("resultAnisotropy"));
-  // b.add_output<decl::Vector>(N_("resultAnisotropyDirection"));
+   b.add_output<decl::Float>(N_("resultRoughness"));
+   b.add_output<decl::Float>(N_("resultAnisotropy"));
+   b.add_output<decl::Vector>(N_("resultAnisotropyDirection"));
 }
 
 static void node_shader_buts_bump_to_roughness(uiLayout *layout,
@@ -52,9 +52,9 @@ static int gpu_shader_bump_to_roughness(GPUMaterial *mat,
                                         GPUNodeStack *in,
                                         GPUNodeStack *out)
 {
-  // if (!in[0].link) {
-  //   GPU_link(mat, "world_normals_get", &out[0].link);
-  // }
+   if (!in[1].link) {
+     GPU_link(mat, "world_normals_get", &out[1].link);
+   }
 
   return GPU_stack_link(mat, node, "node_bump_to_roughness", in, out);
 }

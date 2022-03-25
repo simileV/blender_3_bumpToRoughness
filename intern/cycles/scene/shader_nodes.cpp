@@ -6567,26 +6567,26 @@ NODE_DEFINE(BumpToRoughnessNode)
 {
   NodeType *type = NodeType::add("bump_to_roughness", create, NodeType::SHADER);
 
-  SOCKET_IN_COLOR(test_color, "Test Color", make_float3(1, 1, 0));
 
   // SOCKET_OUT_NORMAL(resultBumpNormal, "resultBumpNormal");
-  SOCKET_OUT_COLOR(resultBumpNormal, "resultBumpNormal");
+  //SOCKET_OUT_COLOR(resultBumpNormal, "resultBumpNormal");
   // SOCKET_OUT_FLOAT(resultBumpNormal, "resultBumpNormal");
 
 
-    //SOCKET_IN_NORMAL(normal, "Normal", zero_float3(), SocketType::LINK_NORMAL);
-    //SOCKET_IN_FLOAT(b0_h, "b0_h", 1.0f);
-    //SOCKET_IN_FLOAT(b1_dhds, "b1_dhds", 1.0f);
-    //SOCKET_IN_FLOAT(b2_dhdt, "b2_dhdt", 1.0f);
+    SOCKET_IN_COLOR(test_color, "Test Color", make_float3(1, 1, 0));
+    SOCKET_IN_NORMAL(normal, "Normal", zero_float3(), SocketType::LINK_NORMAL);
+    SOCKET_IN_FLOAT(b0_h, "b0_h", 1.0f);
+    SOCKET_IN_FLOAT(b1_dhds, "b1_dhds", 1.0f);
+    SOCKET_IN_FLOAT(b2_dhdt, "b2_dhdt", 1.0f);
 
-    //SOCKET_IN_FLOAT(b3_dhds2, "b3_dhds2", 1.0f);
-    //SOCKET_IN_FLOAT(b4_dhdt2, "b4_dhdt2", 1.0f);
-    //SOCKET_IN_FLOAT(b5_dh2dsdt, "b5_dh2dsdt", 1.0f);
+    SOCKET_IN_FLOAT(b3_dhds2, "b3_dhds2", 1.0f);
+    SOCKET_IN_FLOAT(b4_dhdt2, "b4_dhdt2", 1.0f);
+    SOCKET_IN_FLOAT(b5_dh2dsdt, "b5_dh2dsdt", 1.0f);
 
-    //SOCKET_OUT_NORMAL(resultBumpNormal, "resultBumpNormal");
-    //SOCKET_OUT_FLOAT(resultRoughness, "resultRoughness");
-    //SOCKET_OUT_FLOAT(resultAnisotropy, "resultAnisotropy");
-    //SOCKET_OUT_VECTOR(resultBumpNormal, "resultAnisotropyDirection");
+    SOCKET_OUT_NORMAL(resultBumpNormal, "resultBumpNormal");
+    SOCKET_OUT_FLOAT(resultRoughness, "resultRoughness");
+    SOCKET_OUT_FLOAT(resultAnisotropy, "resultAnisotropy");
+    SOCKET_OUT_VECTOR(resultBumpNormal, "resultAnisotropyDirection");
 
   return type;
 }
@@ -6600,7 +6600,11 @@ BumpToRoughnessNode::BumpToRoughnessNode() : ShaderNode(get_node_type())
 void BumpToRoughnessNode::compile(SVMCompiler &compiler)
 {
   ShaderInput *test_color_in = input("Test Color");
+  ShaderInput *normal_in = input("Normal");
+
   int test_color_offset = compiler.stack_assign(test_color_in);
+  int normal_offset = compiler.stack_assign_if_linked(normal_in);
+  //int normal_offset = compiler.stack_assign(normal_in);
 
   ShaderOutput *resultBumpNormal = output("resultBumpNormal");
 
@@ -6609,7 +6613,7 @@ void BumpToRoughnessNode::compile(SVMCompiler &compiler)
                     compiler.stack_assign(resultBumpNormal),
                     compiler.stack_assign(resultBumpNormal));
 
-  compiler.add_node(test_color_offset, test_color_offset, test_color_offset, test_color_offset);
+  compiler.add_node(test_color_offset, normal_offset, test_color_offset, test_color_offset);
 
   // ShaderInput *normal = input("Normal");
   // ShaderInput *b0_h = input("b0_h");

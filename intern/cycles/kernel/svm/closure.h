@@ -1288,8 +1288,23 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   uint4 data_base_color = read_node(kg, &offset);
   float3 myColor = stack_load_float3(stack, data_base_color.x);
 
-  if (stack_valid(nodeOut))
-    stack_store_float3(stack, nodeOut, myColor);
+  float3 myNormal = stack_load_float3(stack, data_base_color.y);
+
+  //  float3 N = stack_valid(data_node.x) ? stack_load_float3(stack, data_node.x) : sd->N;
+  //if (!(sd->type & PRIMITIVE_CURVE)) {
+  //  N = ensure_valid_reflection(sd->Ng, sd->I, N);
+  //}
+
+  if (stack_valid(nodeOut)) {
+    //stack_store_float3(stack, nodeOut, myColor);
+    stack_store_float3(stack, nodeOut, myNormal);
+  }
+
+  //if (stack_valid(nodeOut)) {
+  //  //stack_store_float3(stack, nodeOut, myColor);
+  //  stack_store_float3(stack, nodeOut, myNormal);
+  //}
+
 
   // uint4 b0_h_read = read_node(kg, &offset);
   // float b0_h = stack_load_float(stack, b0_h_read.x);
@@ -1330,6 +1345,24 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
 }
 
 
+
+// KernelGlobals kg, ccl_private ShaderData *sd, ccl_private float *stack, uint4 node, int offset)
+ccl_device_noinline int svm_bump_to_roughness2(KernelGlobals kg,
+                                              ccl_private ShaderData *sd,
+                                              ccl_private float *stack,
+                                              uint4 nodeOut,
+                                              int offset)
+{
+  uint4 data_base_color = read_node(kg, &offset);
+  float3 myColor = stack_load_float3(stack, data_base_color.x);
+
+   if (stack_valid(nodeOut.w))
+     stack_store_float3(stack, nodeOut.w, myColor);
+
+
+
+  return offset;
+}
 
 
 
