@@ -44,7 +44,6 @@ typedef enum ShaderNodeType {
   NODE_TEX_IMAGE_BOX,
   NODE_TEX_NOISE,
   NODE_SET_BUMP,
-  //NODE_SET_BUMP_TO_ROUGHNESS,
   NODE_ATTR_BUMP_DX,
   NODE_ATTR_BUMP_DY,
   NODE_VERTEX_COLOR_BUMP_DX,
@@ -112,6 +111,7 @@ typedef enum ShaderNodeType {
   NODE_AOV_COLOR,
   NODE_AOV_VALUE,
   NODE_FLOAT_CURVE,
+  NODE_BUMP_TO_ROUGHNESS,
   /* NOTE: for best OpenCL performance, item definition in the enum must
    * match the switch case order in `svm.h`. */
 } ShaderNodeType;

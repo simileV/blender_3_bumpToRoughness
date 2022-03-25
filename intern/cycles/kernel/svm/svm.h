@@ -330,12 +330,6 @@ ccl_device void svm_eval_nodes(KernelGlobals kg,
       case NODE_TEX_NOISE:
         offset = svm_node_tex_noise(kg, sd, stack, node.y, node.z, node.w, offset);
         break;
-      //case NODE_SET_BUMP_TO_ROUGHNESS:
-      //  IF_KERNEL_NODES_FEATURE(BUMP_TO_ROUGHNESS)
-      //  {
-      //    svm_node_set_bump(kg, sd, stack, node);
-      //  }
-      //  break;
       case NODE_SET_BUMP:
         IF_KERNEL_NODES_FEATURE(BUMP)
         {
@@ -588,6 +582,11 @@ ccl_device void svm_eval_nodes(KernelGlobals kg,
       case NODE_AOV_VALUE:
         svm_node_aov_value<node_feature_mask>(kg, state, sd, stack, node, render_buffer);
         break;
+      case NODE_BUMP_TO_ROUGHNESS:
+        // offset = svm_bump_to_roughness(kg, sd, stack, node, offset);
+        offset = svm_bump_to_roughness(kg, sd, stack, node.w, offset);
+        break;
+
       default:
         kernel_assert(!"Unknown node type was passed to the SVM machine");
         return;

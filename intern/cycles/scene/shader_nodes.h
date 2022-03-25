@@ -1409,24 +1409,24 @@ class BumpToRoughnessNode : public ShaderNode {
  public:
   SHADER_NODE_CLASS(BumpToRoughnessNode)
   void constant_fold(const ConstantFolder &folder);
-  //bool has_spatial_varying()
-  //{
-  //  return true;
-  //}
-  //virtual int get_feature()
-  //{
-  //  return KERNEL_FEATURE_NODE_BUMP;
-  //}
 
-  //NODE_SOCKET_API(bool, invert)
-  //NODE_SOCKET_API(bool, use_object_space)
-  //NODE_SOCKET_API(float, height)
-  //NODE_SOCKET_API(float, sample_center)
-  //NODE_SOCKET_API(float, sample_x)
-  //NODE_SOCKET_API(float, sample_y)
-  //NODE_SOCKET_API(float3, normal)
-  //NODE_SOCKET_API(float, strength)
-  //NODE_SOCKET_API(float, distance)
+  /*   void compile(SVMCompiler &compiler,
+                ShaderInput *b0_h,
+                ShaderInput *b1_dhds,
+                ShaderInput *b2_dhdt,
+                ShaderInput *b3_dhds2,
+                ShaderInput *b4_dhdt2,
+                ShaderInput *b5_dh2dsdt);*/
+
+  NODE_SOCKET_API(float3, test_color)
+  // NODE_SOCKET_API(float3, normal)
+  // NODE_SOCKET_API(float, b0_h)
+  // NODE_SOCKET_API(float, b1_dhds)
+  // NODE_SOCKET_API(float, b2_dhdt)
+
+  // NODE_SOCKET_API(float, b3_dhds2)
+  // NODE_SOCKET_API(float, b4_dhdt2)
+  // NODE_SOCKET_API(float, b5_dh2dsdt)
 };
 
 class CurvesNode : public ShaderNode {

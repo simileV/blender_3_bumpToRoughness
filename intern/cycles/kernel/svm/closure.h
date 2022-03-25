@@ -1277,4 +1277,66 @@ ccl_device void svm_node_set_normal(KernelGlobals kg,
   stack_store_float3(stack, out_normal, normal);
 }
 
+
+//KernelGlobals kg, ccl_private ShaderData *sd, ccl_private float *stack, uint4 node, int offset)
+ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
+                                                  ccl_private ShaderData *sd,
+                                                  ccl_private float *stack,
+                                                  uint nodeOut,
+                                                  int offset)
+{
+  uint4 data_base_color = read_node(kg, &offset);
+  float3 myColor = stack_load_float3(stack, data_base_color.x);
+
+  if (stack_valid(nodeOut))
+    stack_store_float3(stack, nodeOut, myColor);
+
+  // uint4 b0_h_read = read_node(kg, &offset);
+  // float b0_h = stack_load_float(stack, b0_h_read.x);
+
+  // uint4 b1_dhds_read = read_node(kg, &offset);
+  // float b1_dhds = stack_load_float(stack, b1_dhds_read.x);
+
+  // uint4 b2_dhdt_read = read_node(kg, &offset);
+  // float b2_dhdt = stack_load_float(stack, b2_dhdt_read.x);
+
+  // uint4 b3_dhds2_read = read_node(kg, &offset);
+  // float b3_dhds2 = stack_load_float(stack, b3_dhds2_read.x);
+
+  // uint4 b4_dhdt2_read = read_node(kg, &offset);
+  // float b4_dhdt2 = stack_load_float(stack, b4_dhdt2_read.x);
+
+  // uint4 b5_dh2dsdt_read = read_node(kg, &offset);
+  // float b5_dh2dsdt = stack_load_float(stack, b5_dh2dsdt_read.x);
+
+  // uint4 invertBumpNormal_read = read_node(kg, &offset);
+  // bool invertBumpNormal = stack_load_int(stack, invertBumpNormal_read.x);
+  // bool invertBumpNormal = 0;
+  // bool invertBumpNormal = stack_load_bool(stack, invertBumpNormal_read.x);
+
+  // uint4 baseRoughness_read = read_node(kg, &offset);
+  // float baseRoughness = stack_load_float(stack, baseRoughness_read.x);
+
+  // uint4 gain_read = read_node(kg, &offset);
+  // float gain = stack_load_float(stack, gain_read.x);
+
+  // uint4 bumpNormalGain_read = read_node(kg, &offset);
+  // float bumpNormalGain = stack_load_float(stack, bumpNormalGain_read.x);
+
+  // uint4 anisotropyGain_read = read_node(kg, &offset);
+  // float anisotropyGain = stack_load_float(stack, anisotropyGain_read.x);
+
+  return offset;
+}
+
+
+
+
+
+
+
+
+
+
+
 CCL_NAMESPACE_END

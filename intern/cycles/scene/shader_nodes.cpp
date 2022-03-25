@@ -6561,87 +6561,120 @@ void BumpNode::constant_fold(const ConstantFolder &folder)
 
 
 /* BumpToRoughnessNode */
+/* BumpToRoughnessNode */
 
 NODE_DEFINE(BumpToRoughnessNode)
 {
   NodeType *type = NodeType::add("bump_to_roughness", create, NodeType::SHADER);
 
-  //SOCKET_BOOLEAN(invert, "Invert", false);
-  //SOCKET_BOOLEAN(use_object_space, "UseObjectSpace", false);
+  SOCKET_IN_COLOR(test_color, "Test Color", make_float3(1, 1, 0));
 
-  ///* this input is used by the user, but after graph transform it is no longer
-  // * used and moved to sampler center/x/y instead */
-  //SOCKET_IN_FLOAT(height, "Height", 1.0f);
+  // SOCKET_OUT_NORMAL(resultBumpNormal, "resultBumpNormal");
+  SOCKET_OUT_COLOR(resultBumpNormal, "resultBumpNormal");
+  // SOCKET_OUT_FLOAT(resultBumpNormal, "resultBumpNormal");
 
-  //SOCKET_IN_FLOAT(sample_center, "SampleCenter", 0.0f);
-  //SOCKET_IN_FLOAT(sample_x, "SampleX", 0.0f);
-  //SOCKET_IN_FLOAT(sample_y, "SampleY", 0.0f);
-  //SOCKET_IN_NORMAL(normal, "Normal", zero_float3(), SocketType::LINK_NORMAL);
-  //SOCKET_IN_FLOAT(strength, "Strength", 1.0f);
-  //SOCKET_IN_FLOAT(distance, "Distance", 0.1f);
 
-  SOCKET_OUT_NORMAL(normal, "Normal");
-  //SOCKET_OUT_NORMAL(normal, "Normal2");
+    //SOCKET_IN_NORMAL(normal, "Normal", zero_float3(), SocketType::LINK_NORMAL);
+    //SOCKET_IN_FLOAT(b0_h, "b0_h", 1.0f);
+    //SOCKET_IN_FLOAT(b1_dhds, "b1_dhds", 1.0f);
+    //SOCKET_IN_FLOAT(b2_dhdt, "b2_dhdt", 1.0f);
+
+    //SOCKET_IN_FLOAT(b3_dhds2, "b3_dhds2", 1.0f);
+    //SOCKET_IN_FLOAT(b4_dhdt2, "b4_dhdt2", 1.0f);
+    //SOCKET_IN_FLOAT(b5_dh2dsdt, "b5_dh2dsdt", 1.0f);
+
+    //SOCKET_OUT_NORMAL(resultBumpNormal, "resultBumpNormal");
+    //SOCKET_OUT_FLOAT(resultRoughness, "resultRoughness");
+    //SOCKET_OUT_FLOAT(resultAnisotropy, "resultAnisotropy");
+    //SOCKET_OUT_VECTOR(resultBumpNormal, "resultAnisotropyDirection");
 
   return type;
 }
 
 BumpToRoughnessNode::BumpToRoughnessNode() : ShaderNode(get_node_type())
 {
-  special_type = SHADER_SPECIAL_TYPE_BUMP;
-  //special_type = SHADER_SPECIAL_TYPE_NONE;
+  // special_type = SHADER_SPECIAL_TYPE_BUMP;
+  // special_type = SHADER_SPECIAL_TYPE_NONE;
 }
 
 void BumpToRoughnessNode::compile(SVMCompiler &compiler)
 {
-  //ShaderInput *center_in = input("SampleCenter");
-  //ShaderInput *dx_in = input("SampleX");
-  //ShaderInput *dy_in = input("SampleY");
-  //ShaderInput *normal_in = input("Normal");
-  //ShaderInput *strength_in = input("Strength");
-  //ShaderInput *distance_in = input("Distance");
-  ShaderOutput *normal_out = output("Normal");
+  ShaderInput *test_color_in = input("Test Color");
+  int test_color_offset = compiler.stack_assign(test_color_in);
 
-  ///* pack all parameters in the node */
-  //compiler.add_node(NODE_SET_BUMP_TO_ROUGHNESS,
-  //                  compiler.encode_uchar4(compiler.stack_assign_if_linked(normal_in),
-  //                                         compiler.stack_assign(distance_in),
-  //                                         invert,
-  //                                         use_object_space),
-  //                  compiler.encode_uchar4(compiler.stack_assign(center_in),
-  //                                         compiler.stack_assign(dx_in),
-  //                                         compiler.stack_assign(dy_in),
-  //                                         compiler.stack_assign(strength_in)),
-                    //compiler.stack_assign(normal_out));
+  ShaderOutput *resultBumpNormal = output("resultBumpNormal");
+
+  compiler.add_node(NODE_BUMP_TO_ROUGHNESS,
+                    compiler.stack_assign(resultBumpNormal),
+                    compiler.stack_assign(resultBumpNormal),
+                    compiler.stack_assign(resultBumpNormal));
+
+  compiler.add_node(test_color_offset, test_color_offset, test_color_offset, test_color_offset);
+
+  // ShaderInput *normal = input("Normal");
+  // ShaderInput *b0_h = input("b0_h");
+  // ShaderInput *b1_dhds = input("b1_dhds");
+  // ShaderInput *b2_dhdt = input("b2_dhdt");
+  //
+  // ShaderInput *b3_dhds2 = input("b3_dhds2");
+  // ShaderInput *b4_dhdt2 = input("b4_dhdt2");
+  // ShaderInput *b5_dh2dsdt = input("b5_dh2dsdt");
+
+  ////ShaderInput *invertBumpNormal = input("invertBumpNormal");
+  // ShaderInput *baseRoughness = input("baseRoughness");
+  // ShaderInput *gain = input("gain");
+  // ShaderInput *bumpNormalGain = input("bumpNormalGain");
+  // ShaderInput *anisotropyGain = input("anisotropyGain");
+
+  // ShaderOutput *resultBumpNormal = output("resultBumpNormal");
+  // ShaderOutput *resultRoughness = output("resultRoughness");
+  // ShaderOutput *resultAnisotropy = output("resultAnisotropy");
+  // ShaderOutput *resultAnisotropyDirection = output("resultAnisotropyDirection");
+
+  // int normal_offset = compiler.stack_assign_if_linked(normal);
+  // int b0_h_offset = compiler.stack_assign(b0_h);
+  // int b1_dhds_offset = compiler.stack_assign(b1_dhds);
+  // int b2_dhdt_offset = compiler.stack_assign(b2_dhdt);
+
+  // int b3_dhds2_offset = compiler.stack_assign(b3_dhds2);
+  // int b4_dhdt2_offset = compiler.stack_assign(b4_dhdt2);
+  // int b5_dh2dsdt_offset = compiler.stack_assign(b5_dh2dsdt);
+
+  ////int invertBumpNormal_offset = compiler.stack_assign(invertBumpNormal);
+  // int baseRoughness_offset = compiler.stack_assign(baseRoughness);
+  // int gain_offset = compiler.stack_assign(gain);
+  // int bumpNormalGain_offset = compiler.stack_assign(bumpNormalGain);
+  // int anisotropyGain_offset = compiler.stack_assign(anisotropyGain);
+
+  // compiler.add_node(NODE_BUMP_TO_ROUGHNESS,
+  //                   0);
+
+  // compiler.add_node(normal_offset);
+  // compiler.add_node(b0_h_offset);
+  // compiler.add_node(b1_dhds_offset);
+  // compiler.add_node(b2_dhdt_offset);
+
+  // compiler.add_node(b3_dhds2_offset);
+  // compiler.add_node(b4_dhdt2_offset);
+  // compiler.add_node(b5_dh2dsdt_offset);
+
+  ////compiler.add_node(invertBumpNormal_offset);
+  // compiler.add_node(baseRoughness_offset);
+  // compiler.add_node(gain_offset);
+  // compiler.add_node(bumpNormalGain_offset);
+  // compiler.add_node(anisotropyGain_offset);
 }
 
 void BumpToRoughnessNode::compile(OSLCompiler &compiler)
 {
-  //compiler.parameter(this, "invert");
-  //compiler.parameter(this, "use_object_space");
-  //compiler.add(this, "node_bump");
+  // compiler.parameter(this, "invert");
+  // compiler.parameter(this, "use_object_space");
+  // compiler.add(this, "node_bump_to_roughness");
 }
 
 void BumpToRoughnessNode::constant_fold(const ConstantFolder &folder)
 {
-  //ShaderInput *height_in = input("Height");
-  //ShaderInput *normal_in = input("Normal");
-
-  //if (height_in->link == NULL) {
-  //  if (normal_in->link == NULL) {
-  //    GeometryNode *geom = folder.graph->create_node<GeometryNode>();
-  //    folder.graph->add(geom);
-  //    folder.bypass(geom->output("Normal"));
-  //  }
-  //  else {
-  //    folder.bypass(normal_in->link);
-  //  }
-  //}
-
-  /* TODO(sergey): Ignore bump with zero strength. */
 }
-
-
 
 
 
