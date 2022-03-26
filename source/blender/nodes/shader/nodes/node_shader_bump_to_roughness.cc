@@ -17,11 +17,11 @@ namespace blender::nodes::node_shader_bump_to_roughness_cc {
 static void node_declare(NodeDeclarationBuilder &b)
 {
   b.add_input<decl::Color>(N_("test_color")).default_value({1, 1, 0, 1});
-  //b.add_input<decl::Color>(N_("test_color_2")).default_value({0, 1, 0, 1});
-  //b.add_input<decl::Color>(N_("test_color_3")).default_value({0, 0, 1, 1});
-  //b.add_input<decl::Color>(N_("test_color_4")).default_value({1, 1, 1, 1});
-  //b.add_input<decl::Color>(N_("test_color_5")).default_value({1, 0, 0, 1});
-  //b.add_input<decl::Color>(N_("test_color_6")).default_value({0, 1, 1, 1});
+  b.add_input<decl::Color>(N_("test_color_2")).default_value({0, 1, 0, 1});
+  b.add_input<decl::Color>(N_("test_color_3")).default_value({0, 0, 1, 1});
+  b.add_input<decl::Color>(N_("test_color_4")).default_value({1, 1, 1, 1});
+  b.add_input<decl::Color>(N_("test_color_5")).default_value({1, 0, 0, 1});
+  b.add_input<decl::Color>(N_("test_color_6")).default_value({0, 1, 1, 1});
 
    //b.add_input<decl::Vector>(N_("Normal")).hide_value();
 
@@ -41,11 +41,11 @@ static void node_declare(NodeDeclarationBuilder &b)
    //b.add_output<decl::Vector>(N_("resultBumpNormal"));
    b.add_output<decl::Vector>(N_("resultBumpColor"));
 
-   //b.add_output<decl::Vector>(N_("resultBumpColor2"));
-   //b.add_output<decl::Vector>(N_("resultBumpColor3"));
-   //b.add_output<decl::Vector>(N_("resultBumpColor4"));
-   //b.add_output<decl::Vector>(N_("resultBumpColor5"));
-   //b.add_output<decl::Vector>(N_("resultBumpColor6"));
+   b.add_output<decl::Vector>(N_("resultBumpColor2"));
+   b.add_output<decl::Vector>(N_("resultBumpColor3"));
+   b.add_output<decl::Vector>(N_("resultBumpColor4"));
+   b.add_output<decl::Vector>(N_("resultBumpColor5"));
+   b.add_output<decl::Vector>(N_("resultBumpColor6"));
 
    //b.add_output<decl::Float>(N_("resultRoughness"));
    //b.add_output<decl::Float>(N_("resultAnisotropy"));

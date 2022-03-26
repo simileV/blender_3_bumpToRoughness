@@ -1344,8 +1344,6 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   return offset;
 }
 
-
-
 // KernelGlobals kg, ccl_private ShaderData *sd, ccl_private float *stack, uint4 node, int offset)
 ccl_device_noinline int svm_bump_to_roughness2(KernelGlobals kg,
                                               ccl_private ShaderData *sd,
@@ -1353,29 +1351,59 @@ ccl_device_noinline int svm_bump_to_roughness2(KernelGlobals kg,
                                               uint4 nodeOut,
                                               int offset)
 {
-  //uint4 out2 = read_node(kg, &offset);
-  //uint4 out3 = read_node(kg, &offset);
+  uint4 out2 = read_node(kg, &offset);
+  uint4 out3 = read_node(kg, &offset);
 
   uint4 data_base_color = read_node(kg, &offset);
   float3 myColor = stack_load_float3(stack, data_base_color.x);
 
-  //uint4 data_base_color_2 = read_node(kg, &offset);
-  //float3 myColor_2 = stack_load_float3(stack, data_base_color_2.x);
+  // get the base color
+  ////uint4 data_base_color = read_node(kg, &offset);
+  //float3 base_color = stack_valid(data_base_color.x) ?
+  //                        stack_load_float3(stack, data_base_color.x) :
+  //                        make_float3(__uint_as_float(data_base_color.y),
+  //                                    __uint_as_float(data_base_color.z),
+  //                                    __uint_as_float(data_base_color.w));
 
-  //uint4 data_base_color_3 = read_node(kg, &offset);
-  //float3 myColor_3 = stack_load_float3(stack, data_base_color_3.x);
+  //float3 color = stack_load_float3(stack, color_ofs);
 
-  //uint4 data_base_color_4 = read_node(kg, &offset);
-  //float3 myColor_4 = stack_load_float3(stack, data_base_color_4.x);
+  uint4 data_base_color_2g = read_node(kg, &offset);
+  float3 myColor_2g = stack_valid(data_base_color_2g.x) ?
+                        stack_load_float3(stack, data_base_color_2g.x) :
+                         make_float3(__uint_as_float(data_base_color_2g.y),
+                                     __uint_as_float(data_base_color_2g.z),
+                                     __uint_as_float(data_base_color_2g.w));
 
-  //uint4 data_base_color_5 = read_node(kg, &offset);
-  //float3 myColor_5 = stack_load_float3(stack, data_base_color_5.x);
+  uint4 data_base_color_2 = read_node(kg, &offset);
+  float3 myColor_2 = stack_load_float3(stack, data_base_color_2.x);
+
+  uint4 data_base_color_3 = read_node(kg, &offset);
+  float3 myColor_3 = stack_load_float3(stack, data_base_color_3.x);
+
+  uint4 data_base_color_4 = read_node(kg, &offset);
+  float3 myColor_4 = stack_load_float3(stack, data_base_color_4.x);
+
+  uint4 data_base_color_5 = read_node(kg, &offset);
+  float3 myColor_5 = stack_load_float3(stack, data_base_color_5.x);
+
+  uint4 data_base_color_6 = read_node(kg, &offset);
+  float3 myColor_6 = stack_load_float3(stack, data_base_color_6.x);
 
   //uint4 data_normal = read_node(kg, &offset);
   //float3 myNormal = stack_load_float3(stack, data_normal.y);
 
   if (stack_valid(nodeOut.z))
      stack_store_float3(stack, nodeOut.z, myColor);
+
+  if (stack_valid(out2.x))
+    stack_store_float3(stack, out2.x, myColor_2g);
+    //stack_store_float3(stack, out2.x, myColor_2);
+
+  //if (stack_valid(out2.y))
+  //  stack_store_float3(stack, out2.y, myColor_2);
+
+  if (stack_valid(out2.z))
+    stack_store_float3(stack, out2.z, myColor_3);
 
   //if (stack_valid(nodeOut.w))
   //  stack_store_float3(stack, nodeOut.w, myNormal);

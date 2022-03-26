@@ -2859,27 +2859,6 @@ void PrincipledBsdfNode::attributes(Shader *shader, AttributeRequestSet *attribu
   ShaderNode::attributes(shader, attributes);
 }
 
-//void PrincipledBsdfNode::compile(SVMCompiler &compiler,
-//                                 ShaderInput *p_metallic,
-//                                 ShaderInput *p_subsurface,
-//                                 ShaderInput *p_subsurface_radius,
-//                                 ShaderInput *p_subsurface_ior,
-//                                 ShaderInput *p_subsurface_anisotropy,
-//                                 ShaderInput *p_specular,
-//                                 ShaderInput *p_roughness,
-//                                 ShaderInput *p_specular_tint,
-//                                 ShaderInput *p_anisotropic,
-//                                 ShaderInput *p_sheen,
-//                                 ShaderInput *p_sheen_tint,
-//                                 ShaderInput *p_clearcoat,
-//                                 ShaderInput *p_clearcoat_roughness,
-//                                 ShaderInput *p_ior,
-//                                 ShaderInput *p_transmission,
-//                                 ShaderInput *p_anisotropic_rotation,
-//                                 ShaderInput *p_transmission_roughness,
-//                                 ShaderInput *p_specular_roughness,
-//                                 ShaderInput *p_diffuse_roughness)
-
 void PrincipledBsdfNode::compile(SVMCompiler &compiler,
                                  ShaderInput *p_metallic,
                                  ShaderInput *p_subsurface,
@@ -2908,7 +2887,6 @@ void PrincipledBsdfNode::compile(SVMCompiler &compiler,
 
   ShaderInput *specular_roughness_in = input("Specular Roughness");
   ShaderInput *diffuse_roughness_in = input("Diffuse Roughness");
-
 
   float3 weight = one_float3();
 
@@ -6573,12 +6551,13 @@ NODE_DEFINE(BumpToRoughnessNode)
   // SOCKET_OUT_FLOAT(resultBumpNormal, "resultBumpNormal");
 
 
+    //SOCKET_IN_COLOR(test_color, "Test Color", make_float3(1, 0, 0));
     SOCKET_IN_COLOR(test_color, "Test Color", make_float3(1, 1, 0));
-    //SOCKET_IN_COLOR(test_color_2, "Test Color 2", make_float3(0, 1, 0));
-    //SOCKET_IN_COLOR(test_color_3, "Test Color 3", make_float3(0, 0, 1));
-    //SOCKET_IN_COLOR(test_color_4, "Test Color 4", make_float3(1, 1, 1));
-    //SOCKET_IN_COLOR(test_color_5, "Test Color 5", make_float3(1, 0, 0));
-    //SOCKET_IN_COLOR(test_color_6, "Test Color 6", make_float3(0, 1, 1));
+    SOCKET_IN_COLOR(test_color_2, "Test Color 2", make_float3(0, 1, 0));
+    SOCKET_IN_COLOR(test_color_3, "Test Color 3", make_float3(0, 0, 1));
+    SOCKET_IN_COLOR(test_color_4, "Test Color 4", make_float3(1, 1, 1));
+    SOCKET_IN_COLOR(test_color_5, "Test Color 5", make_float3(1, 0, 0));
+    SOCKET_IN_COLOR(test_color_6, "Test Color 6", make_float3(0, 1, 1));
 
 
 
@@ -6597,12 +6576,11 @@ NODE_DEFINE(BumpToRoughnessNode)
     //SOCKET_OUT_NORMAL(resultBumpNormal, "resultBumpNormal");
     SOCKET_OUT_COLOR(resultBumpColor, "resultBumpColor");
 
-
-    //SOCKET_OUT_COLOR(resultBumpColor2, "resultBumpColor2");
-    //SOCKET_OUT_COLOR(resultBumpColor3, "resultBumpColor3");
-    //SOCKET_OUT_COLOR(resultBumpColor4, "resultBumpColor4");
-    //SOCKET_OUT_COLOR(resultBumpColor5, "resultBumpColor5");
-    //SOCKET_OUT_COLOR(resultBumpColor6, "resultBumpColor6");
+    SOCKET_OUT_COLOR(resultBumpColor2, "resultBumpColor2");
+    SOCKET_OUT_COLOR(resultBumpColor3, "resultBumpColor3");
+    SOCKET_OUT_COLOR(resultBumpColor4, "resultBumpColor4");
+    SOCKET_OUT_COLOR(resultBumpColor5, "resultBumpColor5");
+    SOCKET_OUT_COLOR(resultBumpColor6, "resultBumpColor6");
 
     //SOCKET_OUT_FLOAT(resultRoughness, "resultRoughness");
     //SOCKET_OUT_FLOAT(resultAnisotropy, "resultAnisotropy");
@@ -6620,29 +6598,29 @@ BumpToRoughnessNode::BumpToRoughnessNode() : ShaderNode(get_node_type())
 void BumpToRoughnessNode::compile(SVMCompiler &compiler)
 {
   ShaderInput *test_color_in = input("Test Color");
-  //ShaderInput *test_color_2_in = input("Test Color 2");
-  //ShaderInput *test_color_3_in = input("Test Color 3");
-  //ShaderInput *test_color_4_in = input("Test Color 4");
-  //ShaderInput *test_color_5_in = input("Test Color 5");
-  //ShaderInput *test_color_6_in = input("Test Color 6");
+  ShaderInput *test_color_2_in = input("Test Color 2");
+  ShaderInput *test_color_3_in = input("Test Color 3");
+  ShaderInput *test_color_4_in = input("Test Color 4");
+  ShaderInput *test_color_5_in = input("Test Color 5");
+  ShaderInput *test_color_6_in = input("Test Color 6");
   //ShaderInput *normal_in = input("Normal");
 
   int test_color_offset = compiler.stack_assign(test_color_in);
-  //int test_color_2_offset = compiler.stack_assign(test_color_2_in);
-  //int test_color_3_offset = compiler.stack_assign(test_color_3_in);
-  //int test_color_4_offset = compiler.stack_assign(test_color_4_in);
-  //int test_color_5_offset = compiler.stack_assign(test_color_5_in);
-  //int test_color_6_offset = compiler.stack_assign(test_color_6_in);
+  int test_color_2_offset = compiler.stack_assign(test_color_2_in);
+  int test_color_3_offset = compiler.stack_assign(test_color_3_in);
+  int test_color_4_offset = compiler.stack_assign(test_color_4_in);
+  int test_color_5_offset = compiler.stack_assign(test_color_5_in);
+  int test_color_6_offset = compiler.stack_assign(test_color_6_in);
   //int normal_offset = compiler.stack_assign_if_linked(normal_in);
   //int normal_offset = compiler.stack_assign(normal_in);
 
   //ShaderOutput *resultBumpNormal = output("resultBumpNormal");
   ShaderOutput *resultBumpColor = output("resultBumpColor");
-  //ShaderOutput *resultBumpColor2 = output("resultBumpColor2");
-  //ShaderOutput *resultBumpColor3 = output("resultBumpColor3");
-  //ShaderOutput *resultBumpColor4 = output("resultBumpColor4");
-  //ShaderOutput *resultBumpColor5 = output("resultBumpColor5");
-  //ShaderOutput *resultBumpColor6 = output("resultBumpColor6");
+  ShaderOutput *resultBumpColor2 = output("resultBumpColor2");
+  ShaderOutput *resultBumpColor3 = output("resultBumpColor3");
+  ShaderOutput *resultBumpColor4 = output("resultBumpColor4");
+  ShaderOutput *resultBumpColor5 = output("resultBumpColor5");
+  ShaderOutput *resultBumpColor6 = output("resultBumpColor6");
 
   compiler.add_node(NODE_BUMP_TO_ROUGHNESS,
                     //compiler.stack_assign(resultBumpNormal),
@@ -6650,14 +6628,25 @@ void BumpToRoughnessNode::compile(SVMCompiler &compiler)
                     compiler.stack_assign(resultBumpColor),
                     compiler.stack_assign(resultBumpColor));
 
+
+
+
+
+    compiler.add_node(compiler.stack_assign(resultBumpColor2),
+                    compiler.stack_assign(resultBumpColor2),
+                    compiler.stack_assign(resultBumpColor3),
+                    compiler.stack_assign(resultBumpColor4));
+
   //compiler.add_node(NODE_BUMP_TO_ROUGHNESS, compiler.stack_assign(resultBumpColor2), 
   //    compiler.stack_assign(resultBumpColor3), 
   //        compiler.stack_assign(resultBumpColor4));
 
-  //compiler.add_node(NODE_BUMP_TO_ROUGHNESS, 
-  //    compiler.stack_assign(resultBumpColor5), 
-  //        compiler.stack_assign(resultBumpColor6), 
-  //            compiler.stack_assign(resultBumpColor6));
+  compiler.add_node(NODE_BUMP_TO_ROUGHNESS, 
+      compiler.stack_assign(resultBumpColor5), 
+          compiler.stack_assign(resultBumpColor6), 
+              compiler.stack_assign(resultBumpColor6));
+
+
 
   //compiler.add_node(test_color_offset);
   //compiler.add_node(normal_offset);
@@ -6665,16 +6654,26 @@ void BumpToRoughnessNode::compile(SVMCompiler &compiler)
   //compiler.add_node(test_color_offset);
   //compiler.add_node(normal_offset);
   compiler.add_node(test_color_offset, test_color_offset, test_color_offset, test_color_offset);
-  //compiler.add_node(
-  //    test_color_2_offset, test_color_2_offset, test_color_2_offset, test_color_2_offset);
-  //compiler.add_node(
-  //    test_color_3_offset, test_color_3_offset, test_color_3_offset, test_color_3_offset);
-  //compiler.add_node(
-  //    test_color_4_offset, test_color_4_offset, test_color_4_offset, test_color_4_offset);
-  //compiler.add_node(
-  //    test_color_5_offset, test_color_5_offset, test_color_5_offset, test_color_5_offset);
-  //compiler.add_node(
-  //    test_color_6_offset, test_color_6_offset, test_color_6_offset, test_color_6_offset);
+
+      float3 bc_default = get_float3(test_color_in->socket_type);
+
+  compiler.add_node(
+      ((test_color_in->link) ? compiler.stack_assign(test_color_in) : SVM_STACK_INVALID),
+      __float_as_int(bc_default.x),
+      __float_as_int(bc_default.y),
+      __float_as_int(bc_default.z));
+
+
+  compiler.add_node(test_color_2_offset, test_color_2_offset, test_color_2_offset, test_color_2_offset);
+  compiler.add_node(test_color_3_offset, test_color_3_offset, test_color_3_offset, test_color_3_offset);
+  compiler.add_node(test_color_4_offset, test_color_4_offset, test_color_4_offset, test_color_4_offset);
+  compiler.add_node(test_color_5_offset, test_color_5_offset, test_color_5_offset, test_color_5_offset);
+  compiler.add_node(test_color_6_offset, test_color_6_offset, test_color_6_offset, test_color_6_offset);
+
+
+
+
+
   //compiler.add_node(test_color_offset, test_color_offset, test_color_offset, test_color_offset);
   //compiler.add_node(test_color_offset, test_color_offset, test_color_offset, test_color_offset);
   //compiler.add_node(normal_offset, normal_offset, normal_offset, normal_offset);
