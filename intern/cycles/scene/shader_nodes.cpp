@@ -6589,6 +6589,18 @@ NODE_DEFINE(BumpToRoughnessNode)
   return type;
 }
 
+void BumpToRoughnessNode::attributes(Shader *shader, AttributeRequestSet *attributes)
+{
+  //if (shader->has_surface_link()) {
+    //ShaderInput *tangent_in = input("Tangent");
+
+    //if (!tangent_in->link)
+      //attributes->add(ATTR_STD_GENERATED);
+  //}
+
+  ShaderNode::attributes(shader, attributes);
+}
+
 BumpToRoughnessNode::BumpToRoughnessNode() : ShaderNode(get_node_type())
 {
   // special_type = SHADER_SPECIAL_TYPE_BUMP;
@@ -6628,10 +6640,6 @@ void BumpToRoughnessNode::compile(SVMCompiler &compiler)
                     compiler.stack_assign(resultBumpColor),
                     compiler.stack_assign(resultBumpColor));
 
-
-
-
-
     compiler.add_node(compiler.stack_assign(resultBumpColor2),
                     compiler.stack_assign(resultBumpColor2),
                     compiler.stack_assign(resultBumpColor3),
@@ -6641,12 +6649,15 @@ void BumpToRoughnessNode::compile(SVMCompiler &compiler)
   //    compiler.stack_assign(resultBumpColor3), 
   //        compiler.stack_assign(resultBumpColor4));
 
-  compiler.add_node(NODE_BUMP_TO_ROUGHNESS, 
-      compiler.stack_assign(resultBumpColor5), 
-          compiler.stack_assign(resultBumpColor6), 
-              compiler.stack_assign(resultBumpColor6));
+  //compiler.add_node(NODE_BUMP_TO_ROUGHNESS, 
+  //    compiler.stack_assign(resultBumpColor5), 
+  //        compiler.stack_assign(resultBumpColor6), 
+  //            compiler.stack_assign(resultBumpColor6));
 
-
+      compiler.add_node(compiler.stack_assign(resultBumpColor5),
+                      compiler.stack_assign(resultBumpColor5),
+                      compiler.stack_assign(resultBumpColor6),
+                      compiler.stack_assign(resultBumpColor6));
 
   //compiler.add_node(test_color_offset);
   //compiler.add_node(normal_offset);
@@ -6655,13 +6666,26 @@ void BumpToRoughnessNode::compile(SVMCompiler &compiler)
   //compiler.add_node(normal_offset);
   compiler.add_node(test_color_offset, test_color_offset, test_color_offset, test_color_offset);
 
-      float3 bc_default = get_float3(test_color_in->socket_type);
+    //float3 bc_default = get_float3(test_color_in->socket_type);
+  float3 bc_default = get_float3(test_color_2_in->socket_type);
 
-  compiler.add_node(
-      ((test_color_in->link) ? compiler.stack_assign(test_color_in) : SVM_STACK_INVALID),
-      __float_as_int(bc_default.x),
-      __float_as_int(bc_default.y),
-      __float_as_int(bc_default.z));
+  //compiler.add_node(
+  //    ((test_color_in->link) ? compiler.stack_assign(test_color_in) : SVM_STACK_INVALID),
+  //    __float_as_int(bc_default.x),
+  //    __float_as_int(bc_default.y),
+  //    __float_as_int(bc_default.z));
+
+      compiler.add_node(
+        ((test_color_2_in->link) ? compiler.stack_assign(test_color_2_in) : SVM_STACK_INVALID),
+        __float_as_int(bc_default.x),
+        __float_as_int(bc_default.y),
+        __float_as_int(bc_default.z));
+
+
+    //compiler.add_node(__float_as_int(bc_default.x),
+    //    __float_as_int(bc_default.x),
+    //  __float_as_int(bc_default.y),
+    //  __float_as_int(bc_default.z));
 
 
   compiler.add_node(test_color_2_offset, test_color_2_offset, test_color_2_offset, test_color_2_offset);

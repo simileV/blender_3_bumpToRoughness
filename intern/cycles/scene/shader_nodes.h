@@ -548,27 +548,6 @@ class PrincipledBsdfNode : public BsdfBaseNode {
                ShaderInput *anisotropic_rotation,
                ShaderInput *transmission_roughness);
 
-  //void compile(SVMCompiler &compiler,
-  //             ShaderInput *metallic,
-  //             ShaderInput *subsurface,
-  //             ShaderInput *subsurface_radius,
-  //             ShaderInput *subsurface_ior,
-  //             ShaderInput *subsurface_anisotropy,
-  //             ShaderInput *specular,
-  //             ShaderInput *roughness,
-  //             ShaderInput *specular_tint,
-  //             ShaderInput *anisotropic,
-  //             ShaderInput *sheen,
-  //             ShaderInput *sheen_tint,
-  //             ShaderInput *clearcoat,
-  //             ShaderInput *clearcoat_roughness,
-  //             ShaderInput *ior,
-  //             ShaderInput *transmission,
-  //             ShaderInput *anisotropic_rotation,
-  //             ShaderInput *transmission_roughness,
-  //             ShaderInput *specular_roughness,
-  //             ShaderInput *diffuse_roughness);
-
   NODE_SOCKET_API(float3, base_color)
   NODE_SOCKET_API(float3, subsurface_color)
   NODE_SOCKET_API(float3, subsurface_radius)
@@ -1410,14 +1389,6 @@ class BumpToRoughnessNode : public ShaderNode {
   SHADER_NODE_CLASS(BumpToRoughnessNode)
   void constant_fold(const ConstantFolder &folder);
 
-  /*   void compile(SVMCompiler &compiler,
-                ShaderInput *b0_h,
-                ShaderInput *b1_dhds,
-                ShaderInput *b2_dhdt,
-                ShaderInput *b3_dhds2,
-                ShaderInput *b4_dhdt2,
-                ShaderInput *b5_dh2dsdt);*/
-
   NODE_SOCKET_API(float3, test_color)
   NODE_SOCKET_API(float3, test_color_2)
   NODE_SOCKET_API(float3, test_color_3)
@@ -1433,6 +1404,18 @@ class BumpToRoughnessNode : public ShaderNode {
    //NODE_SOCKET_API(float, b3_dhds2)
    //NODE_SOCKET_API(float, b4_dhdt2)
    //NODE_SOCKET_API(float, b5_dh2dsdt)
+
+
+  public:
+
+  bool has_integrator_dependency();
+
+  void attributes(Shader *shader, AttributeRequestSet *attributes);
+
+  bool has_attribute_dependency()
+  {
+    return true;
+  }
 };
 
 class CurvesNode : public ShaderNode {

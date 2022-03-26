@@ -173,6 +173,9 @@ ccl_device_noinline int svm_node_closure_bsdf(KernelGlobals kg,
                                           __uint_as_float(data_base_color.z),
                                           __uint_as_float(data_base_color.w));
 
+      //float3 base_color = stack_load_float3(stack, data_base_color.x);
+
+
       // get the additional clearcoat normal and subsurface scattering radius
       uint4 data_cn_ssr = read_node(kg, &offset);
       float3 clearcoat_normal = stack_valid(data_cn_ssr.x) ?
@@ -1367,12 +1370,29 @@ ccl_device_noinline int svm_bump_to_roughness2(KernelGlobals kg,
 
   //float3 color = stack_load_float3(stack, color_ofs);
 
-  uint4 data_base_color_2g = read_node(kg, &offset);
+  //uint4 data_base_color_2g = read_node(kg, &offset);
+  //float3 myColor_2g = stack_valid(data_base_color_2g.x) ?
+  //                      stack_load_float3(stack, data_base_color_2g.x) :
+  //                       make_float3(__uint_as_float(data_base_color_2g.y),
+  //                                   __uint_as_float(data_base_color_2g.z),
+  //                                   __uint_as_float(data_base_color_2g.w));
+
+
+  //uint4 data_base_color_2g = read_node(kg, &offset);
+  //float3 myColor_2g = make_float3(__uint_as_float(data_base_color_2g.y),
+                                  //__uint_as_float(data_base_color_2g.z),
+                                  //__uint_as_float(data_base_color_2g.w));
+
+
+    uint4 data_base_color_2g = read_node(kg, &offset);
   float3 myColor_2g = stack_valid(data_base_color_2g.x) ?
-                        stack_load_float3(stack, data_base_color_2g.x) :
-                         make_float3(__uint_as_float(data_base_color_2g.y),
-                                     __uint_as_float(data_base_color_2g.z),
-                                     __uint_as_float(data_base_color_2g.w));
+                            stack_load_float3(stack, data_base_color_2g.x) :
+                            make_float3(__uint_as_float(data_base_color_2g.y),
+                                        __uint_as_float(data_base_color_2g.z),
+                                        __uint_as_float(data_base_color_2g.w));
+
+
+
 
   uint4 data_base_color_2 = read_node(kg, &offset);
   float3 myColor_2 = stack_load_float3(stack, data_base_color_2.x);
@@ -1391,6 +1411,12 @@ ccl_device_noinline int svm_bump_to_roughness2(KernelGlobals kg,
 
   //uint4 data_normal = read_node(kg, &offset);
   //float3 myNormal = stack_load_float3(stack, data_normal.y);
+
+  //if (stack_valid(data_base_color_2g.x))
+  //  stack_store_float3(stack, nodeOut.z, myColor);
+
+
+
 
   if (stack_valid(nodeOut.z))
      stack_store_float3(stack, nodeOut.z, myColor);

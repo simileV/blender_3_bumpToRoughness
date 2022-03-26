@@ -74,7 +74,20 @@ static int gpu_shader_bump_to_roughness(GPUMaterial *mat,
 
 static void node_shader_update_bump_to_roughness(bNodeTree *ntree, bNode *node)
 {
+  //const int distribution = node->custom1;
+  //const int sss_method = node->custom2;
+
+  LISTBASE_FOREACH (bNodeSocket *, sock, &node->inputs) {
+    //if (STREQ(sock->name, "Transmission Roughness")) {
+    //  nodeSetSocketAvailability(ntree, sock, distribution == SHD_GLOSSY_GGX);
+    //}
+
+    //if (STR_ELEM(sock->name, "Subsurface IOR", "Subsurface Anisotropy")) {
+    //  nodeSetSocketAvailability(ntree, sock, sss_method != SHD_SUBSURFACE_BURLEY);
+    //}
+  }
 }
+
 
 static void node_shader_init_bump_to_roughness(bNodeTree *UNUSED(ntree), bNode *node)
 {
@@ -100,7 +113,7 @@ void register_node_type_sh_bump_to_roughness()
   // node_type_init(&ntype, file_ns::node_shader_init_bump_to_roughness);
   node_type_size_preset(&ntype, NODE_SIZE_LARGE);
   node_type_gpu(&ntype, file_ns::gpu_shader_bump_to_roughness);
-  // node_type_update(&ntype, file_ns::node_shader_update_bump_to_roughness);
+   node_type_update(&ntype, file_ns::node_shader_update_bump_to_roughness);
 
   nodeRegisterType(&ntype);
 }
