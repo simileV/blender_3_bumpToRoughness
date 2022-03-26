@@ -1419,6 +1419,12 @@ class BumpToRoughnessNode : public ShaderNode {
                 ShaderInput *b5_dh2dsdt);*/
 
   NODE_SOCKET_API(float3, test_color)
+  NODE_SOCKET_API(float3, test_color_2)
+  NODE_SOCKET_API(float3, test_color_3)
+  NODE_SOCKET_API(float3, test_color_4)
+  NODE_SOCKET_API(float3, test_color_5)
+  NODE_SOCKET_API(float3, test_color_6)
+
    NODE_SOCKET_API(float3, normal)
    //NODE_SOCKET_API(float, b0_h)
    //NODE_SOCKET_API(float, b1_dhds)

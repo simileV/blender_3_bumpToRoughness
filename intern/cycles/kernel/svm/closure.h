@@ -1353,10 +1353,23 @@ ccl_device_noinline int svm_bump_to_roughness2(KernelGlobals kg,
                                               uint4 nodeOut,
                                               int offset)
 {
-  //uint4 data_normal0 = read_node(kg, &offset);
+  uint4 out2 = read_node(kg, &offset);
+  uint4 out3 = read_node(kg, &offset);
 
-    uint4 data_base_color = read_node(kg, &offset);
+  uint4 data_base_color = read_node(kg, &offset);
   float3 myColor = stack_load_float3(stack, data_base_color.x);
+
+  uint4 data_base_color_2 = read_node(kg, &offset);
+  float3 myColor_2 = stack_load_float3(stack, data_base_color_2.x);
+
+  uint4 data_base_color_3 = read_node(kg, &offset);
+  float3 myColor_3 = stack_load_float3(stack, data_base_color_3.x);
+
+  uint4 data_base_color_4 = read_node(kg, &offset);
+  float3 myColor_4 = stack_load_float3(stack, data_base_color_4.x);
+
+  uint4 data_base_color_5 = read_node(kg, &offset);
+  float3 myColor_5 = stack_load_float3(stack, data_base_color_5.x);
 
   uint4 data_normal = read_node(kg, &offset);
   float3 myNormal = stack_load_float3(stack, data_normal.y);
