@@ -1408,7 +1408,7 @@ class BumpToRoughnessNode : public ShaderNode {
 
   public:
 
-  bool has_integrator_dependency();
+  //bool has_integrator_dependency();
 
   void attributes(Shader *shader, AttributeRequestSet *attributes);
 
