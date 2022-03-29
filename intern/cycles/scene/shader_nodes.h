@@ -1389,33 +1389,42 @@ class BumpToRoughnessNode : public ShaderNode {
   SHADER_NODE_CLASS(BumpToRoughnessNode)
   void constant_fold(const ConstantFolder &folder);
 
-  NODE_SOCKET_API(float3, test_color)
-  NODE_SOCKET_API(float3, test_color_2)
-  NODE_SOCKET_API(float3, test_color_3)
-  NODE_SOCKET_API(float3, test_color_4)
-  NODE_SOCKET_API(float3, test_color_5)
-  NODE_SOCKET_API(float3, test_color_6)
+  //NODE_SOCKET_API(float3, test_color)
+  //NODE_SOCKET_API(float3, test_color_2)
+  //NODE_SOCKET_API(float3, test_color_3)
+  //NODE_SOCKET_API(float3, test_color_4)
+  //NODE_SOCKET_API(float3, test_color_5)
+  //NODE_SOCKET_API(float3, test_color_6)
 
-   //NODE_SOCKET_API(float3, normal)
-   //NODE_SOCKET_API(float, b0_h)
-   //NODE_SOCKET_API(float, b1_dhds)
-   //NODE_SOCKET_API(float, b2_dhdt)
 
-   //NODE_SOCKET_API(float, b3_dhds2)
-   //NODE_SOCKET_API(float, b4_dhdt2)
-   //NODE_SOCKET_API(float, b5_dh2dsdt)
+
+   NODE_SOCKET_API(float3, normal)
+   NODE_SOCKET_API(float, b0_h)
+   NODE_SOCKET_API(float, b1_dhds)
+   NODE_SOCKET_API(float, b2_dhdt)
+
+   NODE_SOCKET_API(float, b3_dhds2)
+   NODE_SOCKET_API(float, b4_dhdt2)
+   NODE_SOCKET_API(float, b5_dh2dsdt)
+
+   NODE_SOCKET_API(float, baseRoughness)
+   NODE_SOCKET_API(float, gain)
+   NODE_SOCKET_API(float, bumpNormalGain)
+   NODE_SOCKET_API(float, anisotropyGain)
+
+
 
 
   public:
 
   //bool has_integrator_dependency();
 
-  void attributes(Shader *shader, AttributeRequestSet *attributes);
+  //void attributes(Shader *shader, AttributeRequestSet *attributes);
 
-  bool has_attribute_dependency()
-  {
-    return true;
-  }
+  //bool has_attribute_dependency()
+  //{
+  //  return true;
+  //}
 };
 
 class CurvesNode : public ShaderNode {

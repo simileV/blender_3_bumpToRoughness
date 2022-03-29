@@ -583,8 +583,7 @@ ccl_device void svm_eval_nodes(KernelGlobals kg,
         svm_node_aov_value<node_feature_mask>(kg, state, sd, stack, node, render_buffer);
         break;
       case NODE_BUMP_TO_ROUGHNESS:
-         offset = svm_bump_to_roughness2(kg, sd, stack, node, offset);
-        //offset = svm_bump_to_roughness(kg, sd, stack, node.w, offset);
+         offset = svm_bump_to_roughness(kg, sd, stack, node, offset);
         break;
 
       default:

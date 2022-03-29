@@ -1280,75 +1280,8 @@ ccl_device void svm_node_set_normal(KernelGlobals kg,
   stack_store_float3(stack, out_normal, normal);
 }
 
-
-//KernelGlobals kg, ccl_private ShaderData *sd, ccl_private float *stack, uint4 node, int offset)
-ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
-                                                  ccl_private ShaderData *sd,
-                                                  ccl_private float *stack,
-                                                  uint nodeOut,
-                                                  int offset)
-{
-  uint4 data_base_color = read_node(kg, &offset);
-  float3 myColor = stack_load_float3(stack, data_base_color.x);
-
-  //float3 myNormal = stack_load_float3(stack, data_base_color.y);
-
-  //  float3 N = stack_valid(data_node.x) ? stack_load_float3(stack, data_node.x) : sd->N;
-  //if (!(sd->type & PRIMITIVE_CURVE)) {
-  //  N = ensure_valid_reflection(sd->Ng, sd->I, N);
-  //}
-
-  if (stack_valid(nodeOut)) {
-    stack_store_float3(stack, nodeOut, myColor);
-    //stack_store_float3(stack, nodeOut, myNormal);
-  }
-
-  //if (stack_valid(nodeOut)) {
-  //  //stack_store_float3(stack, nodeOut, myColor);
-  //  stack_store_float3(stack, nodeOut, myNormal);
-  //}
-
-
-  // uint4 b0_h_read = read_node(kg, &offset);
-  // float b0_h = stack_load_float(stack, b0_h_read.x);
-
-  // uint4 b1_dhds_read = read_node(kg, &offset);
-  // float b1_dhds = stack_load_float(stack, b1_dhds_read.x);
-
-  // uint4 b2_dhdt_read = read_node(kg, &offset);
-  // float b2_dhdt = stack_load_float(stack, b2_dhdt_read.x);
-
-  // uint4 b3_dhds2_read = read_node(kg, &offset);
-  // float b3_dhds2 = stack_load_float(stack, b3_dhds2_read.x);
-
-  // uint4 b4_dhdt2_read = read_node(kg, &offset);
-  // float b4_dhdt2 = stack_load_float(stack, b4_dhdt2_read.x);
-
-  // uint4 b5_dh2dsdt_read = read_node(kg, &offset);
-  // float b5_dh2dsdt = stack_load_float(stack, b5_dh2dsdt_read.x);
-
-  // uint4 invertBumpNormal_read = read_node(kg, &offset);
-  // bool invertBumpNormal = stack_load_int(stack, invertBumpNormal_read.x);
-  // bool invertBumpNormal = 0;
-  // bool invertBumpNormal = stack_load_bool(stack, invertBumpNormal_read.x);
-
-  // uint4 baseRoughness_read = read_node(kg, &offset);
-  // float baseRoughness = stack_load_float(stack, baseRoughness_read.x);
-
-  // uint4 gain_read = read_node(kg, &offset);
-  // float gain = stack_load_float(stack, gain_read.x);
-
-  // uint4 bumpNormalGain_read = read_node(kg, &offset);
-  // float bumpNormalGain = stack_load_float(stack, bumpNormalGain_read.x);
-
-  // uint4 anisotropyGain_read = read_node(kg, &offset);
-  // float anisotropyGain = stack_load_float(stack, anisotropyGain_read.x);
-
-  return offset;
-}
-
 // KernelGlobals kg, ccl_private ShaderData *sd, ccl_private float *stack, uint4 node, int offset)
-ccl_device_noinline int svm_bump_to_roughness2(KernelGlobals kg,
+ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
                                               ccl_private ShaderData *sd,
                                               ccl_private float *stack,
                                               uint4 nodeOut,
@@ -1356,83 +1289,17 @@ ccl_device_noinline int svm_bump_to_roughness2(KernelGlobals kg,
 {
   uint4 out2 = read_node(kg, &offset);
   uint4 out3 = read_node(kg, &offset);
+  uint4 out4 = read_node(kg, &offset);
+  uint4 out5 = read_node(kg, &offset);
 
-  uint4 data_base_color = read_node(kg, &offset);
-  float3 myColor = stack_load_float3(stack, data_base_color.x);
-
-  // get the base color
-  ////uint4 data_base_color = read_node(kg, &offset);
-  //float3 base_color = stack_valid(data_base_color.x) ?
-  //                        stack_load_float3(stack, data_base_color.x) :
-  //                        make_float3(__uint_as_float(data_base_color.y),
-  //                                    __uint_as_float(data_base_color.z),
-  //                                    __uint_as_float(data_base_color.w));
-
-  //float3 color = stack_load_float3(stack, color_ofs);
-
-  //uint4 data_base_color_2g = read_node(kg, &offset);
-  //float3 myColor_2g = stack_valid(data_base_color_2g.x) ?
-  //                      stack_load_float3(stack, data_base_color_2g.x) :
-  //                       make_float3(__uint_as_float(data_base_color_2g.y),
-  //                                   __uint_as_float(data_base_color_2g.z),
-  //                                   __uint_as_float(data_base_color_2g.w));
-
-
-  //uint4 data_base_color_2g = read_node(kg, &offset);
-  //float3 myColor_2g = make_float3(__uint_as_float(data_base_color_2g.y),
-                                  //__uint_as_float(data_base_color_2g.z),
-                                  //__uint_as_float(data_base_color_2g.w));
-
-
-    uint4 data_base_color_2g = read_node(kg, &offset);
-  float3 myColor_2g = stack_valid(data_base_color_2g.x) ?
-                            stack_load_float3(stack, data_base_color_2g.x) :
-                            make_float3(__uint_as_float(data_base_color_2g.y),
-                                        __uint_as_float(data_base_color_2g.z),
-                                        __uint_as_float(data_base_color_2g.w));
+  float3 N = stack_valid(out3.x) ? stack_load_float3(stack, out3.x) : sd->N;
+  //float3 N = stack_load_float3(stack, data_base_color.x);
 
 
 
 
-  uint4 data_base_color_2 = read_node(kg, &offset);
-  float3 myColor_2 = stack_load_float3(stack, data_base_color_2.x);
-
-  uint4 data_base_color_3 = read_node(kg, &offset);
-  float3 myColor_3 = stack_load_float3(stack, data_base_color_3.x);
-
-  uint4 data_base_color_4 = read_node(kg, &offset);
-  float3 myColor_4 = stack_load_float3(stack, data_base_color_4.x);
-
-  uint4 data_base_color_5 = read_node(kg, &offset);
-  float3 myColor_5 = stack_load_float3(stack, data_base_color_5.x);
-
-  uint4 data_base_color_6 = read_node(kg, &offset);
-  float3 myColor_6 = stack_load_float3(stack, data_base_color_6.x);
-
-  //uint4 data_normal = read_node(kg, &offset);
-  //float3 myNormal = stack_load_float3(stack, data_normal.y);
-
-  //if (stack_valid(data_base_color_2g.x))
-  //  stack_store_float3(stack, nodeOut.z, myColor);
-
-
-
-
-  if (stack_valid(nodeOut.z))
-     stack_store_float3(stack, nodeOut.z, myColor);
-
-  if (stack_valid(out2.x))
-    stack_store_float3(stack, out2.x, myColor_2g);
-    //stack_store_float3(stack, out2.x, myColor_2);
-
-  //if (stack_valid(out2.y))
-  //  stack_store_float3(stack, out2.y, myColor_2);
-
-  if (stack_valid(out2.z))
-    stack_store_float3(stack, out2.z, myColor_3);
-
-  //if (stack_valid(nodeOut.w))
-  //  stack_store_float3(stack, nodeOut.w, myNormal);
+    if (stack_valid(nodeOut.y))
+    stack_store_float3(stack, nodeOut.y, N);
 
   return offset;
 }
