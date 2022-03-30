@@ -1373,7 +1373,9 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
 
 
 
-  float3 Q = sd->P;
+  //float3 Q = sd->P;
+
+  //sd->
 
   float3 dQdx = sd->dP.dx;
   float3 dQdy = sd->dP.dy;
@@ -1383,6 +1385,16 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   float C = sd->dv.dx;
   float D = sd->dv.dy;
 
+  //float A = sd->du.dx;
+  //float B = sd->du.dy;
+  //float C = sd->dv.dx;
+  //float D = sd->dv.dy;
+
+ /* float C = sd->du.dx;
+  float D = sd->du.dy;
+  float A = sd->dv.dx;
+  float B = sd->dv.dy;*/
+
   float invdet = 1.0 / (A * D - B * C);
 
   float3 dQda = (dQdx * D - dQdy * B) * invdet;
@@ -1391,6 +1403,7 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
 
   pPps = dQda;
   pPpt = dQdb;
+  //pPpt = T;
 
 
 
@@ -1405,22 +1418,22 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
     dy = -dy;
   }
 
-  int lefthanded = 0;
-  //int lefthanded = 1;
+  //int lefthanded = 0;
+  int lefthanded = 1;
 
 
    /* RESULTBUMPNORMAL */ 
 
-  pPpt = T;  ////////////////
+  //pPpt = T;  ////////////////
   float3 PN = cross(pPps, pPpt);
 
-  if (dot(PN,sd->Ng)<0) {
-  // /*
-  // left-handed coordinate system
-  // do some remapping to get it back to right-handedness.
-  // */
-   lefthanded = 1;
-   }
+  //if (dot(PN,sd->Ng)<0) {
+  //// /*
+  //// left-handed coordinate system
+  //// do some remapping to get it back to right-handedness.
+  //// */
+  // lefthanded = 1;
+  // }
 
 
   PN = normalize(N_smooth); ///////////////
@@ -1429,27 +1442,56 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
     PN = -PN;
 
 
-  //pPpt = T;  ////////////////
+  pPpt = T;  ////////////////
   pPps = normalize(cross(pPpt, PN));
-  pPpt = cross(PN, pPps);
+  //pPpt = T;  ////////////////
 
-  //if (lefthanded == 0)
-  //  resultBumpNormal = make_float3(dx * bumpNormalGain, dy * bumpNormalGain, 1.0f);
-  //else
-  //  resultBumpNormal = make_float3(dx * bumpNormalGain, dy * bumpNormalGain, -1.0f);
+  //pPpt = cross(PN, pPps);
 
-
-  resultBumpNormal = make_float3(dx, dy, -1.0f);
-  resultBumpNormal = pPps * resultBumpNormal[0] + pPpt * resultBumpNormal[1] +
-                     PN * resultBumpNormal[2];
+  if (lefthanded == 0)
+    resultBumpNormal = make_float3(dx * bumpNormalGain, dy * bumpNormalGain, 1.0f);
+  else
+    resultBumpNormal = make_float3(dx * bumpNormalGain, dy * bumpNormalGain, -1.0f);
 
 
+  //resultBumpNormal = pPps * resultBumpNormal[0] + pPpt * resultBumpNormal[1] +
+  //                   PN * resultBumpNormal[2];
 
+    //resultBumpNormal = pPps * resultBumpNormal[0];
 
+       //resultBumpNormal = pPpt * resultBumpNormal[1];
+  //resultBumpNormal = PN * resultBumpNormal[2];
+
+  //resultBumpNormal = (pPpt * resultBumpNormal[1]) + (PN * resultBumpNormal[2]);
+
+  //pPps = dQda;
+  //pPpt = dQdb;
+
+  //resultBumpNormal = (pPps * resultBumpNormal[0]) + (PN * resultBumpNormal[2]);
+  //resultBumpNormal = (pPps * resultBumpNormal[0]) +
+  //                   (pPpt * resultBumpNormal[1]) +
+  //                    (PN * resultBumpNormal[2]);
+
+    resultBumpNormal = (pPpt * resultBumpNormal[0]) + (pPps * resultBumpNormal[1]) +
+                     (PN * resultBumpNormal[2]);
 
 
   //resultBumpNormal = pPps * resultBumpNormal[0] + pPpt * resultBumpNormal[1] + PN * resultBumpNormal[2];
   resultBumpNormal = normalize(resultBumpNormal);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
    /* RESULTROUGHNESS */ 
 
