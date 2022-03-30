@@ -17,6 +17,7 @@ namespace blender::nodes::node_shader_bump_to_roughness_cc {
 static void node_declare(NodeDeclarationBuilder &b)
 {
    b.add_input<decl::Vector>(N_("Normal")).hide_value();
+   b.add_input<decl::Vector>(N_("Tangent")).hide_value();
 
    b.add_input<decl::Float>(N_("b0_h")).default_value(1.0f).hide_value();
    b.add_input<decl::Float>(N_("b1_dhds")).default_value(1.0f).hide_value();
@@ -26,10 +27,22 @@ static void node_declare(NodeDeclarationBuilder &b)
    b.add_input<decl::Float>(N_("b5_dh2dsdt")).default_value(1.0f).hide_value();
 
   // b.add_input<decl::Bool>(N_("invertBumpNormal")).default_value(false);
-   b.add_input<decl::Float>(N_("baseRoughness")).default_value(0.001f).min(0.0f);
-   b.add_input<decl::Float>(N_("gain")).default_value(1.0f).min(0.0f);
-   b.add_input<decl::Float>(N_("bumpNormalGain")).default_value(1.0f).min(0.0f);
-   b.add_input<decl::Float>(N_("anisotropyGain")).default_value(1.0f).min(0.0f);
+   b.add_input<decl::Float>(N_("baseRoughness"))
+       .default_value(0.001f)
+       .min(0.0f)
+       .subtype(PROP_FACTOR);
+
+   b.add_input<decl::Float>(N_("gain")).default_value(1.0f).min(0.0f).subtype(PROP_FACTOR);
+
+   b.add_input<decl::Float>(N_("bumpNormalGain"))
+       .default_value(1.0f)
+       .min(0.0f)
+       .subtype(PROP_FACTOR);
+
+   b.add_input<decl::Float>(N_("anisotropyGain"))
+       .default_value(1.0f)
+       .min(0.0f)
+       .subtype(PROP_FACTOR);
 
    b.add_output<decl::Vector>(N_("resultBumpNormal"));
    b.add_output<decl::Float>(N_("resultRoughness"));

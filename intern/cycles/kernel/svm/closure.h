@@ -1280,7 +1280,37 @@ ccl_device void svm_node_set_normal(KernelGlobals kg,
   stack_store_float3(stack, out_normal, normal);
 }
 
-// KernelGlobals kg, ccl_private ShaderData *sd, ccl_private float *stack, uint4 node, int offset)
+
+
+
+
+
+
+//PXR_BUMP2ROUGHNESS_H
+
+//ccl_device float3 compute_tangent(float basis)
+//{
+//
+// 
+//    float basis_dx = Dx(basis);
+//    float basis_dy = Dy(basis);
+//
+//    if (std::fabs(basis_dx) < 1.e-6 && std::fabs(basis_dy) < 1.e-6) {
+//      return Dy(P);
+//    }
+//    else {
+//      return (basis_dy * Dx(P)) - (basis_dx * Dy(P));
+//    }
+//  
+//
+//}
+//
+
+
+
+
+
+
 ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
                                               ccl_private ShaderData *sd,
                                               ccl_private float *stack,
@@ -1293,13 +1323,93 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   uint4 out5 = read_node(kg, &offset);
 
   float3 N = stack_valid(out3.x) ? stack_load_float3(stack, out3.x) : sd->N;
-  //float3 N = stack_load_float3(stack, data_base_color.x);
+  float3 T = stack_load_float3(stack, out4.w);
+
+  float b0_h = stack_load_float(stack, out3.y);
+  float b1_dhds = stack_load_float(stack, out3.z);
+  float b2_dhdt = stack_load_float(stack, out3.w);
+
+  float b3_dhds2 = stack_load_float(stack, out4.x);
+  float b4_dhdt2 = stack_load_float(stack, out4.y);
+  float b5_dh2dsdt = stack_load_float(stack, out4.z);
+
+
+  float dx = b1_dhds;
+  float dy = b2_dhdt;
+  float dxdx = b3_dhds2;
+  float dydy = b4_dhdt2;
+  float dxdy = b5_dh2dsdt;
+
+
+  float baseRoughness = stack_load_float(stack, out5.x);
+  float gain = stack_load_float(stack, out5.y);
+  float bumpNormalGain = stack_load_float(stack, out5.z);
+  float anisotropyGain = stack_load_float(stack, out5.w);
+
+  float3 N_smooth = sd->N; //smoothedNormal
+  float3 pPpt = T;
+  float3 pPps = one_float3();
+
+  float3 resultBumpNormal = one_float3();
+  float resultRoughness = 0.0f;
+
+  bool invertBumpNormal = 0;
+
+  if (invertBumpNormal == 0) {
+    dx = -dx;
+    dy = -dy;
+  }
+
+  //int lefthanded = 0;
+  int lefthanded = 1;
 
 
 
+  float3 PN = normalize(N_smooth);
+  if (lefthanded == 1)
+    PN = -PN;
 
-    if (stack_valid(nodeOut.y))
-    stack_store_float3(stack, nodeOut.y, N);
+  pPps = normalize(cross(pPpt, PN));
+  pPpt = cross(PN, pPps);
+
+  if (lefthanded == 0)
+    resultBumpNormal = make_float3(dx * bumpNormalGain, dy * bumpNormalGain, 1.0f);
+  else
+    resultBumpNormal = make_float3(dx * bumpNormalGain, dy * bumpNormalGain, -1.0f);
+
+  resultBumpNormal = pPps * resultBumpNormal[0] + pPpt * resultBumpNormal[1] + PN * resultBumpNormal[2];
+
+  resultBumpNormal = normalize(resultBumpNormal);
+
+
+  //compiler.add_node(NODE_BUMP_TO_ROUGHNESS,
+  //                  compiler.stack_assign(resultBumpNormal),
+  //                  compiler.stack_assign(resultRoughness),
+  //                  compiler.stack_assign(resultAnisotropy));
+
+  //compiler.add_node(compiler.stack_assign(resultAnisotropyDirection),
+  //                  SVM_STACK_INVALID,
+  //                  SVM_STACK_INVALID,
+  //                  SVM_STACK_INVALID);
+  /////////////////////////////////////////////////////////////
+  //resultBumpNormal = nodeOut.y;
+  //resultRoughness = nodeOut.z;
+  //resultAnisotropy = nodeOut.w;
+  //resultAnisotropyDirection = out2.x;
+
+
+  //if (stack_valid(nodeOut.y))
+    //stack_store_float3(stack, nodeOut.y, N);
+
+  if (stack_valid(nodeOut.y)) //resultBumpNormal
+  {
+    stack_store_float3(stack, nodeOut.y, resultBumpNormal);
+    //stack_store_float3(stack, nodeOut.y, N);
+
+  }
+
+  if (stack_valid(nodeOut.z))  // resultRoughness
+    stack_store_float(stack, nodeOut.z, resultRoughness);
 
   return offset;
 }

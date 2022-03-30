@@ -6541,15 +6541,9 @@ NODE_DEFINE(BumpToRoughnessNode)
 {
   NodeType *type = NodeType::add("bump_to_roughness", create, NodeType::SHADER);
 
-    //SOCKET_IN_COLOR(test_color, "Test Color", make_float3(1, 0, 0));
-    //SOCKET_IN_COLOR(test_color, "Test Color", make_float3(1, 1, 0));
-    //SOCKET_IN_COLOR(test_color_2, "Test Color 2", make_float3(0, 1, 0));
-    //SOCKET_IN_COLOR(test_color_3, "Test Color 3", make_float3(0, 0, 1));
-    //SOCKET_IN_COLOR(test_color_4, "Test Color 4", make_float3(1, 1, 1));
-    //SOCKET_IN_COLOR(test_color_5, "Test Color 5", make_float3(1, 0, 0));
-    //SOCKET_IN_COLOR(test_color_6, "Test Color 6", make_float3(0, 1, 1));
-
     SOCKET_IN_NORMAL(normal, "Normal", zero_float3(), SocketType::LINK_NORMAL);
+    SOCKET_IN_NORMAL(tangent, "Tangent", zero_float3(), SocketType::LINK_TANGENT);
+
     SOCKET_IN_FLOAT(b0_h, "b0_h", 1.0f);
     SOCKET_IN_FLOAT(b1_dhds, "b1_dhds", 1.0f);
     SOCKET_IN_FLOAT(b2_dhdt, "b2_dhdt", 1.0f);
@@ -6572,17 +6566,17 @@ NODE_DEFINE(BumpToRoughnessNode)
   return type;
 }
 
-//void BumpToRoughnessNode::attributes(Shader *shader, AttributeRequestSet *attributes)
-//{
-//  //if (shader->has_surface_link()) {
-//    //ShaderInput *tangent_in = input("Tangent");
-//
-//    //if (!tangent_in->link)
-//      //attributes->add(ATTR_STD_GENERATED);
-//  //}
-//
-//  ShaderNode::attributes(shader, attributes);
-//}
+void BumpToRoughnessNode::attributes(Shader *shader, AttributeRequestSet *attributes)
+{
+  if (shader->has_surface_link()) {
+    ShaderInput *tangent_in = input("Tangent");
+
+    if (!tangent_in->link)
+      attributes->add(ATTR_STD_GENERATED);
+  }
+
+  ShaderNode::attributes(shader, attributes);
+}
 
 BumpToRoughnessNode::BumpToRoughnessNode() : ShaderNode(get_node_type())
 {
@@ -6593,6 +6587,7 @@ BumpToRoughnessNode::BumpToRoughnessNode() : ShaderNode(get_node_type())
 void BumpToRoughnessNode::compile(SVMCompiler &compiler)
 {
     ShaderInput *normal_in = input("Normal");
+    ShaderInput *tangent_in = input("Tangent");
 
     ShaderInput *b0_h = input("b0_h");
     ShaderInput *b1_dhds = input("b1_dhds");
@@ -6615,6 +6610,7 @@ void BumpToRoughnessNode::compile(SVMCompiler &compiler)
 
     //int test_color_offset = compiler.stack_assign(test_color_in);
     int normal_offset = compiler.stack_assign(normal_in);
+    int tangent_offset = compiler.stack_assign_if_linked(tangent_in);
 
     int b0_h_offset = compiler.stack_assign(b0_h);
     int b1_dhds_offset = compiler.stack_assign(b1_dhds);
@@ -6631,7 +6627,7 @@ void BumpToRoughnessNode::compile(SVMCompiler &compiler)
     int anisotropyGain_offset = compiler.stack_assign(anisotropyGain);
 
 
-  compiler.add_node(NODE_BUMP_TO_ROUGHNESS,
+    compiler.add_node(NODE_BUMP_TO_ROUGHNESS,
                     compiler.stack_assign(resultBumpNormal),
                       compiler.stack_assign(resultRoughness),
                       compiler.stack_assign(resultAnisotropy));
@@ -6644,9 +6640,9 @@ void BumpToRoughnessNode::compile(SVMCompiler &compiler)
   //compiler.add_node(test_color_offset);
   //compiler.add_node(normal_offset);
     compiler.add_node(normal_offset, b0_h_offset, b1_dhds_offset, b2_dhdt_offset);
-    compiler.add_node(b3_dhds2_offset, b4_dhdt2_offset, b5_dh2dsdt_offset, SVM_STACK_INVALID);
+    compiler.add_node(b3_dhds2_offset, b4_dhdt2_offset, b5_dh2dsdt_offset, tangent_offset);
     compiler.add_node(
-        baseRoughness_offset, gain_offset, bumpNormalGain_offset, anisotropyGain_offset);
+    baseRoughness_offset, gain_offset, bumpNormalGain_offset, anisotropyGain_offset);
 }
 
 void BumpToRoughnessNode::compile(OSLCompiler &compiler)
