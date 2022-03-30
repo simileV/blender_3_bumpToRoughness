@@ -6572,7 +6572,8 @@ void BumpToRoughnessNode::attributes(Shader *shader, AttributeRequestSet *attrib
     ShaderInput *tangent_in = input("Tangent");
 
     if (!tangent_in->link)
-      attributes->add(ATTR_STD_GENERATED);
+      attributes->add(ATTR_STD_UV_TANGENT);
+      //attributes->add(ATTR_STD_GENERATED);
   }
 
   ShaderNode::attributes(shader, attributes);
@@ -6610,7 +6611,8 @@ void BumpToRoughnessNode::compile(SVMCompiler &compiler)
 
     //int test_color_offset = compiler.stack_assign(test_color_in);
     int normal_offset = compiler.stack_assign(normal_in);
-    int tangent_offset = compiler.stack_assign_if_linked(tangent_in);
+    //int tangent_offset = compiler.stack_assign_if_linked(tangent_in);
+    int tangent_offset = compiler.stack_assign(tangent_in);
 
     int b0_h_offset = compiler.stack_assign(b0_h);
     int b1_dhds_offset = compiler.stack_assign(b1_dhds);
