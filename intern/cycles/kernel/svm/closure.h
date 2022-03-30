@@ -1364,6 +1364,7 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   int lefthanded = 1;
 
 
+   /* RESULTBUMPNORMAL */ 
 
   float3 PN = normalize(N_smooth);
   if (lefthanded == 1)
@@ -1380,6 +1381,99 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   resultBumpNormal = pPps * resultBumpNormal[0] + pPpt * resultBumpNormal[1] + PN * resultBumpNormal[2];
 
   resultBumpNormal = normalize(resultBumpNormal);
+
+   /* RESULTROUGHNESS */ 
+
+  /* core LEADR/Bump Roughness Logic */
+  float vargain = gain * gain;
+  float sxx = 2 * vargain * (dxdx - dx * dx);
+  float sxy = 2 * vargain * (dxdy - dx * dy);
+  float syy = 2 * vargain * (dydy - dy * dy);
+
+  float l1, l2;
+  float3 v1 = zero_float3();
+  float3 v2 = zero_float3();
+
+
+
+
+  //covarToEigen2D(sxx, sxy, syy, l1, l2, v1, v2);
+
+  float a = sxx;
+  float b = sxy;
+  float c = syy;
+
+  // 2x2 covariance matrix to eigen space transformation
+
+  // solve for this => (a b)*(v1_x v2_x) = (l1)*(v1_x v2_x)
+  //                   (b c) (v1_y v2_y) = (l2)*(v1_y v2_y)
+
+  // del is the discriminate
+  float del = sqrt(a * a + 4 * b * b - 2 * a * c + c * c);
+
+  // solve for eigenvalues
+  l1 = .5 * (a + c + del);
+  l2 = .5 * (a + c - del);
+
+  // two eigenvectors v1, v2, corresponding to l1, l2, respectively
+  //v1 = zero_float3();
+  v1[1] = 1;
+  v1[0] = (l1 - c) / b;
+  v1 = normalize(v1);
+
+  //v2 = zero_float3();
+  v2[1] = 1;
+  v2[0] = (l2 - c) / b;
+  v2 = normalize(v2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* Projection Note:
+     I have to project the x component of eigenvector to the -pPps-axis
+     and y-component of the eigenvector to the pPpt-axis in order for
+     the ansisotropic direction to be correct.
+
+     Similarly the y-axis facing of the multitexture require similar tweak
+     where x and z-facing projection plane is projecting with "intuitive"
+     porjection axis. I believe that this is a handed-ness issue.
+   */
+
+  float3 _pPpu = -pPps * v1[0] + pPpt * v1[1];
+  float3 _pPpv = -pPps * v2[0] + pPpt * v2[1];
+
+  float base_roughsqr = baseRoughness * baseRoughness;
+
+  /*
+     The discriminant is always positive:
+     roughness U will always be rougher than roughness V.
+   */
+
+  float varianceU = l1 + base_roughsqr;
+  float varianceV = l2 + base_roughsqr;
+
+  // add a little value so we don't get div by zero errors
+  float resultRoughnessU = sqrt(varianceU) + 1e-12;
+  float resultRoughnessV = sqrt(varianceV) + 1e-12;
+  float rudivrv = resultRoughnessU / resultRoughnessV;
+  float resultAnisotropy = (rudivrv - 1.0) / (rudivrv + 1.0);
+
+  resultRoughness = resultRoughnessU / (1 + resultAnisotropy);
+
+
+
 
 
   //compiler.add_node(NODE_BUMP_TO_ROUGHNESS,
