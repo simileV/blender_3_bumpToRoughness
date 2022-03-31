@@ -1292,7 +1292,6 @@ ccl_device_noinline void svm_node_mix_closure(ccl_private ShaderData *sd,
 }
 
 /* (Bump) normal */
-
 ccl_device void svm_node_set_normal(KernelGlobals kg,
                                     ccl_private ShaderData *sd,
                                     ccl_private float *stack,
@@ -1304,18 +1303,9 @@ ccl_device void svm_node_set_normal(KernelGlobals kg,
   stack_store_float3(stack, out_normal, normal);
 }
 
-
-
-
-
-
-
 //PXR_BUMP2ROUGHNESS_H
-
 //ccl_device float3 compute_tangent(float basis)
 //{
-//
-// 
 //    float basis_dx = Dx(basis);
 //    float basis_dy = Dy(basis);
 //
@@ -1325,15 +1315,8 @@ ccl_device void svm_node_set_normal(KernelGlobals kg,
 //    else {
 //      return (basis_dy * Dx(P)) - (basis_dx * Dy(P));
 //    }
-//  
-//
 //}
 //
-
-
-
-
-
 
 ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
                                               ccl_private ShaderData *sd,
@@ -1345,6 +1328,7 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   uint4 out3 = read_node(kg, &offset);
   uint4 out4 = read_node(kg, &offset);
   uint4 out5 = read_node(kg, &offset);
+  uint4 out6 = read_node(kg, &offset);
 
   float3 N = stack_valid(out3.x) ? stack_load_float3(stack, out3.x) : sd->N;
   float3 T = stack_load_float3(stack, out4.w);
@@ -1364,7 +1348,10 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   float dydy = b4_dhdt2;
   float dxdy = b5_dh2dsdt;
 
-
+  //bool invertBumpNormal = out2.y;
+  //int invertBumpNormal = out2.y;
+  //float invertBumpNormal = out2.y;
+  float invertBumpNormal = stack_load_float(stack, out6.x);
   float baseRoughness = stack_load_float(stack, out5.x);
   float gain = stack_load_float(stack, out5.y);
   float bumpNormalGain = stack_load_float(stack, out5.z);
@@ -1426,24 +1413,18 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   pPpt = dQdb;
   // pPpt = T;
 
-
-
-
   float3 resultBumpNormal = one_float3();
   float resultRoughness = 0.0f;
 
-  bool invertBumpNormal = 0;
-
-  //if (invertBumpNormal == 0) {
-  //  dx = -dx;
-  //  dy = -dy;
-  //}
+  if (invertBumpNormal == 1.0) {
+    dx = -dx;
+    dy = -dy;
+  }
 
   // int lefthanded = 0;
   int lefthanded = 1;
 
   /* RESULTBUMPNORMAL */
-
    pPpt = T;  ////////////////
   float3 PN = cross(pPps, pPpt);
 

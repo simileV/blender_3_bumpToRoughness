@@ -1391,6 +1391,7 @@ class BumpToRoughnessNode : public ShaderNode {
 
    NODE_SOCKET_API(float3, normal)
    NODE_SOCKET_API(float3, tangent)
+
    NODE_SOCKET_API(float, b0_h)
    NODE_SOCKET_API(float, b1_dhds)
    NODE_SOCKET_API(float, b2_dhdt)
@@ -1399,6 +1400,7 @@ class BumpToRoughnessNode : public ShaderNode {
    NODE_SOCKET_API(float, b4_dhdt2)
    NODE_SOCKET_API(float, b5_dh2dsdt)
 
+   NODE_SOCKET_API(float, invertBumpNormal)
    NODE_SOCKET_API(float, baseRoughness)
    NODE_SOCKET_API(float, gain)
    NODE_SOCKET_API(float, bumpNormalGain)

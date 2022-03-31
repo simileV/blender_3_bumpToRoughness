@@ -11,7 +11,6 @@
 #include "UI_resources.h"
 
 /* **************** BUMP TO ROUGHNESS ******************** */
-
 namespace blender::nodes::node_shader_bump_to_roughness_cc {
 
 static void node_declare(NodeDeclarationBuilder &b)
@@ -26,10 +25,23 @@ static void node_declare(NodeDeclarationBuilder &b)
    b.add_input<decl::Float>(N_("b4_dhdt2")).default_value(1.0f).hide_value();
    b.add_input<decl::Float>(N_("b5_dh2dsdt")).default_value(1.0f).hide_value();
 
-  // b.add_input<decl::Bool>(N_("invertBumpNormal")).default_value(false);
+      //b.add_input<decl::Int>(N_("invertBumpNormal"))
+      // .default_value(0)
+      // .min(0)
+      // .max(1)
+      // .subtype(PROP_FACTOR);
+
+    b.add_input<decl::Float>(N_("invertBumpNormal"))
+    .default_value(0.0f)
+    .min(0.0f)
+    .max(1.0f)
+    .subtype(PROP_FACTOR);
+
+   //b.add_input<decl::Bool>(N_("invertBumpNormal")).default_value(false);
    b.add_input<decl::Float>(N_("baseRoughness"))
        .default_value(0.001f)
        .min(0.0f)
+       .max(1.0f)
        .subtype(PROP_FACTOR);
 
    b.add_input<decl::Float>(N_("gain")).default_value(1.0f).min(0.0f).subtype(PROP_FACTOR);
@@ -85,8 +97,6 @@ static void node_shader_update_bump_to_roughness(bNodeTree *ntree, bNode *node)
     //}
   }
 }
-
-
 static void node_shader_init_bump_to_roughness(bNodeTree *UNUSED(ntree), bNode *node)
 {
 }
