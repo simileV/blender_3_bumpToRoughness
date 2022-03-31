@@ -1,6 +1,10 @@
-Bump to Roughness in Cycles in OSL, just shoe-horning onto Principled shader into the Blender Source. I have added a Specular Normal input, a specular roughness input, and a diffuse roughness input. You must use OIIO txmake with bumpslopes on a normal or greyscale map to use with Pixar's modified shader. See https://bergjones.artstation.com/projects/xYNql4 for details and video comparison. The OSL shaders are at https://github.com/simileV/abj_osl_b2r
+Bump to Roughness in Cycles on CPU/GPU/OSL with a change to the principled shader to support it. I have added a Specular Normal input, a specular roughness input, and a diffuse roughness input. You must use the abjB2R_split script to generate and split the bump/normal texture with OIIO txmake with bumpslopes and then connect them to the b2r node with separateRGB. See https://bergjones.artstation.com/projects/xYNql4 for details and video comparison. The OSL shaders are at https://github.com/simileV/abj_osl_b2r. The project now runs on GPU. In this repo I have only enabled the gpu kernel for my gpu so make sure to enable the ones you need in cmakelists. I have also automatically set up the project to copy ACES into colormanagement instead of filmic. 
 
 .. figure:: https://cdna.artstation.com/p/assets/images/images/047/176/298/large/similev-compb2r-2.jpg?1646936571
+   :scale: 100 %
+   :align: center
+
+.. figure:: https://cdna.artstation.com/p/assets/images/images/047/895/378/large/similev-b2r-nodes.jpg?1648701126
    :scale: 100 %
    :align: center
 
