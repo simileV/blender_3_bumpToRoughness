@@ -1357,9 +1357,9 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   float b4_dhdt2 = stack_load_float(stack, out4.y);
   float b5_dh2dsdt = stack_load_float(stack, out4.z);
 
-
   float dx = b1_dhds;
   float dy = b2_dhdt;
+
   float dxdx = b3_dhds2;
   float dydy = b4_dhdt2;
   float dxdy = b5_dh2dsdt;
@@ -1375,31 +1375,29 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   float3 pPpt = one_float3();
   float3 pPps = one_float3();
 
+  //float3 resultBumpNormal = N_smooth;
 
+   // partialDeriv(P, mys, myt, pPps, pPpt);
+  // void partialDeriv(point Q, float a, float b, output vector dQda, output vector dQdb)
 
-  //partialDeriv(P, mys, myt, pPps, pPpt);
-  //void partialDeriv(point Q, float a, float b, output vector dQda, output vector dQdb)
+  // float3 Q = sd->P;
 
-  //float3 Q = sd->P;
+  // float3 dQdx = Dx(Q);
+  // float3 dQdy = Dy(Q);
 
-  //float3 dQdx = Dx(Q);
-  //float3 dQdy = Dy(Q);
+  // float A = Dx(a);
+  // float B = Dx(b);
+  // float C = Dy(a);
+  // float D = Dy(b);
 
-  //float A = Dx(a);
-  //float B = Dx(b);
-  //float C = Dy(a);
-  //float D = Dy(b);
+  // float invdet = 1.0 / (A * D - B * C);
 
-  //float invdet = 1.0 / (A * D - B * C);
+  // float3 dQda = (dQdx * D - dQdy * B) * invdet;
+  // float3 dQdb = (dQdy * A - dQdx * C) * invdet;
 
-  //float3 dQda = (dQdx * D - dQdy * B) * invdet;
-  //float3 dQdb = (dQdy * A - dQdx * C) * invdet;
+  // float3 Q = sd->P;
 
-
-
-  //float3 Q = sd->P;
-
-  //sd->
+  // sd->
 
   float3 dQdx = sd->dP.dx;
   float3 dQdy = sd->dP.dy;
@@ -1409,25 +1407,24 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   float C = sd->dv.dx;
   float D = sd->dv.dy;
 
-  //float A = sd->du.dx;
-  //float B = sd->du.dy;
-  //float C = sd->dv.dx;
-  //float D = sd->dv.dy;
+  // float A = sd->du.dx;
+  // float B = sd->du.dy;
+  // float C = sd->dv.dx;
+  // float D = sd->dv.dy;
 
- /* float C = sd->du.dx;
-  float D = sd->du.dy;
-  float A = sd->dv.dx;
-  float B = sd->dv.dy;*/
+  /* float C = sd->du.dx;
+   float D = sd->du.dy;
+   float A = sd->dv.dx;
+   float B = sd->dv.dy;*/
 
   float invdet = 1.0 / (A * D - B * C);
 
   float3 dQda = (dQdx * D - dQdy * B) * invdet;
   float3 dQdb = (dQdy * A - dQdx * C) * invdet;
 
-
   pPps = dQda;
   pPpt = dQdb;
-  //pPpt = T;
+  // pPpt = T;
 
 
 
@@ -1437,21 +1434,20 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
 
   bool invertBumpNormal = 0;
 
-  if (invertBumpNormal == 0) {
-    dx = -dx;
-    dy = -dy;
-  }
+  //if (invertBumpNormal == 0) {
+  //  dx = -dx;
+  //  dy = -dy;
+  //}
 
-  //int lefthanded = 0;
+  // int lefthanded = 0;
   int lefthanded = 1;
 
+  /* RESULTBUMPNORMAL */
 
-   /* RESULTBUMPNORMAL */ 
-
-  //pPpt = T;  ////////////////
+   pPpt = T;  ////////////////
   float3 PN = cross(pPps, pPpt);
 
-  //if (dot(PN,sd->Ng)<0) {
+  // if (dot(PN,sd->Ng)<0) {
   //// /*
   //// left-handed coordinate system
   //// do some remapping to get it back to right-handedness.
@@ -1459,18 +1455,14 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   // lefthanded = 1;
   // }
 
-
-  PN = normalize(N_smooth); ///////////////
+  PN = normalize(N_smooth);  ///////////////
 
   if (lefthanded == 1)
     PN = -PN;
 
-
-  pPpt = T;  ////////////////
-  pPps = normalize(cross(pPpt, PN));
   //pPpt = T;  ////////////////
-
-  //pPpt = cross(PN, pPps);
+  pPps = normalize(cross(pPpt, PN));
+  pPpt = cross(PN, pPps);
 
   if (lefthanded == 0)
     resultBumpNormal = make_float3(dx * bumpNormalGain, dy * bumpNormalGain, 1.0f);
@@ -1478,46 +1470,15 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
     resultBumpNormal = make_float3(dx * bumpNormalGain, dy * bumpNormalGain, -1.0f);
 
 
-  //resultBumpNormal = pPps * resultBumpNormal[0] + pPpt * resultBumpNormal[1] +
-  //                   PN * resultBumpNormal[2];
-
-    //resultBumpNormal = pPps * resultBumpNormal[0];
-
-       //resultBumpNormal = pPpt * resultBumpNormal[1];
-  //resultBumpNormal = PN * resultBumpNormal[2];
-
-  //resultBumpNormal = (pPpt * resultBumpNormal[1]) + (PN * resultBumpNormal[2]);
-
-  //pPps = dQda;
-  //pPpt = dQdb;
-
-  //resultBumpNormal = (pPps * resultBumpNormal[0]) + (PN * resultBumpNormal[2]);
-  //resultBumpNormal = (pPps * resultBumpNormal[0]) +
-  //                   (pPpt * resultBumpNormal[1]) +
-  //                    (PN * resultBumpNormal[2]);
-
-    resultBumpNormal = (pPpt * resultBumpNormal[0]) + (pPps * resultBumpNormal[1]) +
-                     (PN * resultBumpNormal[2]);
+  //resultBumpNormal = (pPpt * resultBumpNormal[0]) + (pPps * resultBumpNormal[1]) + (PN * resultBumpNormal[2]);
+  resultBumpNormal = pPpt * resultBumpNormal.x + pPps * resultBumpNormal.y + PN * resultBumpNormal.z;
 
 
-  //resultBumpNormal = pPps * resultBumpNormal[0] + pPpt * resultBumpNormal[1] + PN * resultBumpNormal[2];
   resultBumpNormal = normalize(resultBumpNormal);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-   /* RESULTROUGHNESS */ 
+  /* RESULTROUGHNESS */
 
   /* core LEADR/Bump Roughness Logic */
   float vargain = gain * gain;
@@ -1529,7 +1490,7 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   float3 v1 = zero_float3();
   float3 v2 = zero_float3();
 
-  //covarToEigen2D(sxx, sxy, syy, l1, l2, v1, v2);
+  // covarToEigen2D(sxx, sxy, syy, l1, l2, v1, v2);
 
   float a = sxx;
   float b = sxy;
@@ -1548,31 +1509,27 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   l2 = .5 * (a + c - del);
 
   // two eigenvectors v1, v2, corresponding to l1, l2, respectively
-  //v1 = zero_float3();
-  v1[1] = 1;
-  v1[0] = (l1 - c) / b;
+  // v1 = zero_float3();
+  v1.y = 1;
+  v1.x = (l1 - c) / b;
   v1 = normalize(v1);
 
-  //v2 = zero_float3();
-  v2[1] = 1;
-  v2[0] = (l2 - c) / b;
+  // v2 = zero_float3();
+  v2.y = 1;
+  v2.x = (l2 - c) / b;
   v2 = normalize(v2);
-
-
-
 
   /* Projection Note:
      I have to project the x component of eigenvector to the -pPps-axis
      and y-component of the eigenvector to the pPpt-axis in order for
      the ansisotropic direction to be correct.
-
      Similarly the y-axis facing of the multitexture require similar tweak
      where x and z-facing projection plane is projecting with "intuitive"
      porjection axis. I believe that this is a handed-ness issue.
    */
 
-  float3 _pPpu = -pPps * v1[0] + pPpt * v1[1];
-  float3 _pPpv = -pPps * v2[0] + pPpt * v2[1];
+  float3 _pPpu = -pPps * v1.x + pPpt * v1.y;
+  float3 _pPpv = -pPps * v2.x + pPpt * v2.y;
 
   float base_roughsqr = baseRoughness * baseRoughness;
 
@@ -1596,24 +1553,7 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
 
 
 
-  //compiler.add_node(NODE_BUMP_TO_ROUGHNESS,
-  //                  compiler.stack_assign(resultBumpNormal),
-  //                  compiler.stack_assign(resultRoughness),
-  //                  compiler.stack_assign(resultAnisotropy));
 
-  //compiler.add_node(compiler.stack_assign(resultAnisotropyDirection),
-  //                  SVM_STACK_INVALID,
-  //                  SVM_STACK_INVALID,
-  //                  SVM_STACK_INVALID);
-  /////////////////////////////////////////////////////////////
-  //resultBumpNormal = nodeOut.y;
-  //resultRoughness = nodeOut.z;
-  //resultAnisotropy = nodeOut.w;
-  //resultAnisotropyDirection = out2.x;
-
-
-  //if (stack_valid(nodeOut.y))
-    //stack_store_float3(stack, nodeOut.y, N);
 
   if (stack_valid(nodeOut.y)) //resultBumpNormal
   {
