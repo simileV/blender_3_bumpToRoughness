@@ -37,6 +37,12 @@ static void node_declare(NodeDeclarationBuilder &b)
     .max(1.0f)
     .subtype(PROP_FACTOR);
 
+    b.add_input<decl::Float>(N_("invertedBumpGain"))
+    .default_value(-0.15f)
+    .min(-1.0f)
+    .max(1.0f)
+    .subtype(PROP_FACTOR);
+
    //b.add_input<decl::Bool>(N_("invertBumpNormal")).default_value(false);
    b.add_input<decl::Float>(N_("baseRoughness"))
        .default_value(0.001f)

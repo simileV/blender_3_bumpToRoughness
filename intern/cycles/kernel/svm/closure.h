@@ -1303,20 +1303,10 @@ ccl_device void svm_node_set_normal(KernelGlobals kg,
   stack_store_float3(stack, out_normal, normal);
 }
 
-//PXR_BUMP2ROUGHNESS_H
-//ccl_device float3 compute_tangent(float basis)
-//{
-//    float basis_dx = Dx(basis);
-//    float basis_dy = Dy(basis);
-//
-//    if (std::fabs(basis_dx) < 1.e-6 && std::fabs(basis_dy) < 1.e-6) {
-//      return Dy(P);
-//    }
-//    else {
-//      return (basis_dy * Dx(P)) - (basis_dx * Dy(P));
-//    }
-//}
-//
+ccl_device_noinline float invertB2R(float color, float factor)
+{
+  return factor * (1.0f - color) + (1.0f - factor) * color;
+}
 
 ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
                                               ccl_private ShaderData *sd,
@@ -1348,10 +1338,8 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   float dydy = b4_dhdt2;
   float dxdy = b5_dh2dsdt;
 
-  //bool invertBumpNormal = out2.y;
-  //int invertBumpNormal = out2.y;
-  //float invertBumpNormal = out2.y;
   float invertBumpNormal = stack_load_float(stack, out6.x);
+  float invertedBumpGain = stack_load_float(stack, out6.y);
   float baseRoughness = stack_load_float(stack, out5.x);
   float gain = stack_load_float(stack, out5.y);
   float bumpNormalGain = stack_load_float(stack, out5.z);
@@ -1450,13 +1438,14 @@ ccl_device_noinline int svm_bump_to_roughness(KernelGlobals kg,
   else
     resultBumpNormal = make_float3(dx * bumpNormalGain, dy * bumpNormalGain, -1.0f);
 
-
-  //resultBumpNormal = (pPpt * resultBumpNormal[0]) + (pPps * resultBumpNormal[1]) + (PN * resultBumpNormal[2]);
   resultBumpNormal = pPpt * resultBumpNormal.x + pPps * resultBumpNormal.y + PN * resultBumpNormal.z;
 
+  if (invertBumpNormal == 1.0) {
+    resultBumpNormal.x = invertB2R(resultBumpNormal.x, invertedBumpGain);
+    resultBumpNormal.y = invertB2R(resultBumpNormal.y, invertedBumpGain);
+  }
 
   resultBumpNormal = normalize(resultBumpNormal);
-
 
 
   /* RESULTROUGHNESS */

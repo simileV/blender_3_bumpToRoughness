@@ -6554,6 +6554,7 @@ NODE_DEFINE(BumpToRoughnessNode)
 
     //SOCKET_IN_BOOLEAN(invertBumpNormal, "invertBumpNormal", false);
     SOCKET_IN_FLOAT(invertBumpNormal, "invertBumpNormal", 0.0f);
+    SOCKET_IN_FLOAT(invertedBumpGain, "invertedBumpGain", -0.15f);
     SOCKET_IN_FLOAT(baseRoughness, "baseRoughness", 1.0f);
     SOCKET_IN_FLOAT(gain, "gain", 1.0f);
     SOCKET_IN_FLOAT(bumpNormalGain, "bumpNormalGain", 1.0f);
@@ -6600,6 +6601,7 @@ void BumpToRoughnessNode::compile(SVMCompiler &compiler)
     ShaderInput *b5_dh2dsdt = input("b5_dh2dsdt");
 
     ShaderInput *invertBumpNormal = input("invertBumpNormal");
+    ShaderInput *invertedBumpGain = input("invertedBumpGain");
     ShaderInput *baseRoughness = input("baseRoughness");
     ShaderInput *gain = input("gain");
     ShaderInput *bumpNormalGain = input("bumpNormalGain");
@@ -6624,6 +6626,7 @@ void BumpToRoughnessNode::compile(SVMCompiler &compiler)
     int b5_dh2dsdt_offset = compiler.stack_assign(b5_dh2dsdt);
 
     int invertBumpNormal_offset = compiler.stack_assign(invertBumpNormal);
+    int invertedBumpGain_offset = compiler.stack_assign(invertedBumpGain);
     int baseRoughness_offset = compiler.stack_assign(baseRoughness);
     int gain_offset = compiler.stack_assign(gain);
     int bumpNormalGain_offset = compiler.stack_assign(bumpNormalGain);
@@ -6648,7 +6651,7 @@ void BumpToRoughnessNode::compile(SVMCompiler &compiler)
     baseRoughness_offset, gain_offset, bumpNormalGain_offset, anisotropyGain_offset);
 
         compiler.add_node(invertBumpNormal_offset,
-                      invertBumpNormal_offset,
+                      invertedBumpGain_offset,
                       invertBumpNormal_offset,
                       invertBumpNormal_offset);
 }
